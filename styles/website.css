@@ -1,0 +1,35 @@
+/* CSS for website */
+ .book .book-summary, .book .book-body,code{
+   font-family:"Microsoft YaHei UI",
+               "Microsoft Yahei",
+               "PingFang SC",
+               "Lantinghei SC",
+               "Hiragino Sans GB",
+               "WenQuanYi Micro Hei",
+               "WenQuanYi Zen Hei",
+               "Noto Sans CJK SC",
+               "Microsoft JhengHei UI",
+               "Microsoft JhengHei",
+               "PingFang TC",
+               "Lantinghei TC",
+               "Noto Sans CJK TC",
+               "Helvetica Neue",
+               Helvetica,
+               Arial,
+               sans-serif;
+ }
+
+.page-inner{
+    max-width: 80%
+}
+.markdown-section code {
+    font-family:Consolas,"Microsoft YaHei UI","Liberation Mono",Menlo,Courier,monospace
+}
+
+.book-summary ul.summary li a .gitbook-link{
+    display:none
+}
+
+.book-header .pull-right{
+    display: none
+}
