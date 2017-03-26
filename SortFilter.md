@@ -15,9 +15,27 @@ Demo 模块
 ## 二、类的设计 ##
 
 ### 2.1 类图 ###
-
+![Picture Name](assets/hmy/商品竞价排名_类图.png)
 ### 2.2 类描述 ###
-#### XX类 ####
+#### IFilter类 ####
+| 类名 | IFilter |
+| :--- | :--- |
+|方法|List`<`GoodInfo`>` doFilter(List`<`GoodInfo`>`)|
+|前置条件	|无|
+|后置条件	|无|
+
+#### SortFilter类 ####
+| 类名 | IFilter |
+| :--- | :--- |
+|方法|List`<`GoodInfo`>` doFilter(List`<`GoodInfo`>`)|
+|前置条件	|管道中有待排序的数据|
+|后置条件	|无|
+
+
+
+
+
+
 
 ## 三、重要协作 ##
 ### 顺序图 ###
