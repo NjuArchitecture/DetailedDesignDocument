@@ -78,10 +78,10 @@
 ##### 类职责 #####
 对商品列表中的商品信息按照其来源网站的优先级由高到低排序
 ##### 类方法 #####
-* Decorator（IFilter）
+* WebsiteSortFilter（IFilter）
 	* 职责：构造函数
 	* 前置条件：IFilter实例被创建
-	* 后置条件：私有成员IFilter指向SortFilter实例
+	* 后置条件：Decorator被初始化
 
 * List`<`GoodInfo`>` doFilter(List`<`GoodInfo`>`): 
 	* 职责：根据竞价排名规则进行过滤
