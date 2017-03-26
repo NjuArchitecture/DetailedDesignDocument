@@ -39,6 +39,7 @@
 ## 二、类的设计
 ### 2.1 类图采用
 - 采用组合模式设计类图
+
 ![Pipe&Filter Class Diagram](assets/hq/Pipe&Filter Class Diagram.png)
 
 
@@ -57,7 +58,9 @@
 |  public  List\<T\> doFilter(List\<T\> list)| 传入数据并按需处理再将数据返回 |
 
 该类实现了接口中定义的doFilter方法，参数list为通过管道传入的需要处理的数据
+
 前置条件：数据通过管道传递过来
+
 后置条件：处理好的数据通过管道传出
 
 
@@ -79,4 +82,18 @@
 
 ## 四、设计模式应用
 ### 4.1 组合模式
-### 4.2 责任链模式
+
+**使用场景**
+
+如果是filter下仍有多个filter，一个中间过滤器下面还一棵树，构成过滤器树。
+
+**组合模式在类图中的体现**
+
+![Pipe&Filter Class Diagram](assets/hq/Pipe&Filter Class Diagram.png)
+
+**要达到的效果**
+
+要求过滤对象满足其包含的所有子filter,但不关注子filter的实现；
+依赖抽象而不依赖实现；体现出具有层次之别的过滤器族，强调“整体-部分”的特性。
+
+
