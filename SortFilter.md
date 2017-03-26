@@ -48,7 +48,7 @@
 ---
 #### SortFilter类 ####
 ##### 类职责 #####
-本类的职责是暂时存储DataProvider传过来的大量数据，并以流的方式提供商品的数据。
+本类的职责是执行竞价排名操作
 
 ##### 类方法 #####
 * List`<`GoodInfo`>` doFilter(List`<`GoodInfo`>`): 
@@ -56,27 +56,20 @@
 	* 前置条件：管道中有待排序的数据
 	* 后置条件：无
 
-
-* public void getCommodity():Stream\<Commodity\>
-	* 职责：返回缓存池里未持久化的信息
-	* 前置条件：类初始化完成
-	* 后置条件：返回未持久化的商品信息
-
 ---
 
-#### PreProcessing类 ####
+#### Decorator类 ####
 ##### 类职责 #####
-本类的职责主要是预处理Commodity，并将预处理过后的Commodity信息以流的形式返回。
-可能的预处理逻辑包括增加域，修改域的信息，如将字符串时间转化为时间戳等
-预处理的逻辑可能变化，因此采用策略模式，将具体的预处理逻辑放在PreProcessStrategy中
+装饰者
 
 ##### 类方法 #####
-* public void getCommodity():Stream\<Commodity\>
-	* 职责：返回预处理后的信息
-	* 前置条件：从TempSave类处获取数据
-	* 后置条件：返回预处理后的商品信息流
+* Decorator（IFilter）
+	* 职责：构造函数
+	* 前置条件：IFilter实例被创建
+	* 后置条件：私有成员IFilter指向SortFilter实例
 
-* private void process()
+* List`<`GoodInfo`>` doFilter(List`<`GoodInfo`>`): 
+
 	* 职责：预处理信息，调用PreProcessStrategy实现
 	* 前置条件：预处理策略已设置
 	* 后置条件：完成预处理
