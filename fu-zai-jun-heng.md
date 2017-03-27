@@ -241,4 +241,4 @@ VO类,记录Server的各类属性
 
 ![](/assets/sbin/负载均衡Builder.png)
 
-负载均衡的Config类是复杂的,并且其数据可能来源于配置文件,硬编码或者网络,因此使用Builder来处理其构造过程.![](/assets/负载均衡Builder.png)
+负载均衡的Config类是复杂的,并且其数据可能来源于配置文件,硬编码或者网络,因此使用Builder来处理其构造过程.
