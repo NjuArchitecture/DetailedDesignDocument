@@ -1,7 +1,5 @@
 # Register 模块
 
-
-
 ## 一、概述
 
 ### 承担的需求（主要秘密）
@@ -11,7 +9,7 @@
 ### 可能会修改的实现（次要秘密）
 
 * 注册中心的监听者
-* 服务器健康监测的规则
+* 客户端可能是不同的平台.
 
 ### 涉及的相关质量属性
 
@@ -19,24 +17,34 @@
 
 ### 设计概述
 
-同一个服务可能有多个服务提供者,同时可能有新的服务器注册进来,或者服务器宕机而被剔除,服务器也可能会主动解除注册.
-同时,服务调用者需要向注册中心查询服务列表,以便调用服务.
+同一个服务可能有多个服务提供者,同时可能有新的服务器注册进来,或者服务器宕机而被剔除,服务器也可能会主动解除注册.  
+同时,服务调用者需要向注册中心查询服务列表,以便调用服务.  
 因此,Register分为Server和Client两部分.Server是注册中心服务器,负责服务器列表的维护,Client负责向服务器注册/注销或汇报健康状态,通知也能像服务器查询服务.
 
 ### 角色
 
 ### 模块对外接口
 
-**ReigisterServer**
-public register(ServerInfo)
-public cancel(ServerInfo)
-public List Server getService
+**ReigisterServer**  
+public void register\(ServerInfo\)  
+public void cancel\(ServerInfo\)  
+public List&lt;ServerInfo&gt; getService\(serviceName\)
+
+
+
+**RegisterClient**
+
+public void register\(\)
+
+public void cancel\(\)
+
+public List&lt;ServerInfo&gt; getService\(serviceName\)
+
+public void registerListener\(RegisterOberver\)
 
 ## 二、类的设计
 
 ### 2.1 类图
-
-
 
 ### 2.2 类描述
 
@@ -212,13 +220,9 @@ VO类,记录Server的各类属性
 
 ---
 
-
 ## 四、设计模式应用
 
 ### 策略模式
-
-
-
 
 负载均衡模块有两处使用了策略模式.分别是负载均衡的策略和服务列表更新的策略.
 
@@ -230,15 +234,11 @@ VO类,记录Server的各类属性
 
 服务列表可以来源于注册中心或手动配置.使用注册中心这意味着不需要自己去检测其状态,只需要监听即可.手动配置时需要定期ping服务器已确定其状态.这里采用不同的UpdateStrategy封装.
 
-
 ### 适配器模式
-
-
 
 对于面向注册中心的服务更新,需要监听Register发来的变化.这里让RegisterUpdateStrategy适配RegisterObserver接口,以监听变化并完成更新.
 
 ### Builder
 
-
-
 负载均衡的Config类是复杂的,并且其数据可能来源于配置文件,硬编码或者网络,因此使用Builder来处理其构造过程.
+
