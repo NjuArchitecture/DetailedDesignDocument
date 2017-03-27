@@ -34,7 +34,7 @@
 
 一个服务可能调用其他多个服务,而每个服务有多台实际的服务器.所以我们采用LoadBalancerClient,下简称Client,作为各个服务的门面,发起者可以直接调用Client.每一种服务对应一个LoadBalancer对象,提供对服务列表的初始化/选择/增加/删除等操作.
 
-对于不同的负载均衡算法,封装在LoadBalanceStrategy中.对于不同的
+对于不同的负载均衡算法,封装在LoadBalanceStrategy中.对于不同的服务列表维护方法,比如读配置中的静态服务列表,或注册中心查询到的列表,通过UpdateStrategy封装.
 
 ### 角色 ###
 
