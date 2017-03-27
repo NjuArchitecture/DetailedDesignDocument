@@ -22,4 +22,5 @@
   * [进程视图](最终进程视图.md)
   * [部署视图](最终部署视图.md)
 * [负载均衡](fu-zai-jun-heng.md)
+* [注册中心](zhu-ce-zhong-xin.md)
 
