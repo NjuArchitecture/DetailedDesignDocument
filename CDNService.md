@@ -76,6 +76,7 @@
 
 ### 使用场景：
 ![](assets/hmy/CDN设计模式.png)
+
 资源服务器ContentServer与缓存服务器CacheServer之间需要维持数据一致性。而且可能存在很多台缓存服务器。
 
 ### 效果：
