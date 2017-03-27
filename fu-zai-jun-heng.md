@@ -44,7 +44,6 @@
 1. Object **execute**(Request request);
 
 
-
 ## 二、类的设计 ##
 
 ### 2.1 类图 ###
