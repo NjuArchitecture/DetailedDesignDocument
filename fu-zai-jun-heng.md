@@ -205,8 +205,10 @@ VO类,记录Server的各类属性
 
 ##### 类属性
 
-* public String serverId; //server的ID
-* public  
+* public String serverId; //服务ID
+* public String serviceName; //服务名称
+* public String host;  //服务地址
+* public int port;    //服务端口
 
 ---
 
