@@ -101,15 +101,21 @@ Spider类定义了如何爬取某个(或某些)网站。包括了爬取的动作
 
 ###Rule类
  每个 Rule 对爬取网站的动作定义了特定表现。  
- * extract_links():List----它接收一个 Response 对象,从网页中抽取最终将会被链接的对象。  
+ * extract_links():List----它接收一个 Response 对象,从网页中抽取最终将会被链接的对象
  
- * callback该spider中同名的函数将会被调用。 从extract_links中每次获取到链接时将会调用该函数。  
+ * callback该spider中同名的函数将会被调用。 从extract_links中每次获取到链接时将会调用该函数
  
- *  -allow:reg----必须要匹配这个正则表达式(或正则表达式列表)的URL才会被提取｡
+ *  -allow:reg----必须要匹配这个正则表达式(或正则表达式列表)的URL才会被提取
   
- * deny: reg----与这个正则表达式(或正则表达式列表)的(绝对)不匹配的URL必须被排除在外(即不提取)｡   
+ * -deny: reg----与这个正则表达式(或正则表达式列表)的(绝对)不匹配的URL必须被排除在外(即不提取)   
  
- *  
+ *  -tags: String----提取链接时要考虑的标记或标记列表  
+ 
+ *  -cb_kwargs:Dictionary----包含传递给回调函数的参数(keyword argument)的字典  
+ 
+ *  -follow:boolean----指定了根据该规则从response提取的链接是否需要跟进  
+ 
+ * -process_links:String----该spider中同名的函数将会被调用。 从extract_links中获取到链接列表时将会调用该函数。该方法主要用来过滤。
  
 # 四、重要协作 #
 顺序图与协作描述
