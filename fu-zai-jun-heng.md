@@ -60,7 +60,7 @@
 * public Object execute(Request request): 
 	* 职责：发起一次请求
 	* 前置条件：配置正确,服务初始化成功
-	* 后置条件：完成PersistenceService类的初始化
+	* 后置条件：完成调用返回结果
 
 ---
 
