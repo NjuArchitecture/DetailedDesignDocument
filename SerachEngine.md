@@ -6,8 +6,9 @@
 | :--- | :--- | :--- |
 | Tokenlization  |序列化| |
 | Normalization  |标准化  |
-|Front Service|前端服务| 前端是相对而言的|
+|Front Service|前端服务| 前端是相对而言的,这里是指调用搜索服务的一方|
 |Data Provider| 数据提供者 | 如爬虫|
+|Query| 查询语言|内部定义的查询语言类|
 
 
 ## 一、概述 ##
@@ -192,7 +193,7 @@ Filter类是建立索引的关键类，它持有一系列的过滤器，逐个�
 	* 前置条件：无
 	* 后置条件：完成过滤
 
-* public Map<Key, Commodity> getCommodity();
+* public Map\<Key, Commodity\> getCommodity();
 	* 职责：返回经过过滤的商品信息键值对
 	* 前置条件：商品信息过滤完成
 	* 后置条件：返回经过过滤的商品信息键值对
@@ -273,6 +274,8 @@ KeyFilter接口定义了所有关键字Filter类必须实现的接口，便于Fi
 ##### 类职责 #####
 由于过滤器大多使用了策略模式来控制可能的变更，因此存在大量的Strategy类，为了减少繁冗的说明，在这里一并说明。其主要考虑基本是为了能够更好地复用这些策略，更加符合开闭原则，避免未来可能的对算法的修改破坏原来类的封装性，于是将行为抽象成接口，并将实现放在策略类的具体实现类中。
 
+注： 此处的"\*FilterStrategy"指代所有以“\*FilterStrategy”结尾的接口，下文impl同
+
 ##### 类方法 #####
 * UselessWordStrategy::judgeIfUseless(String):判断token是否为无效词
 * SynonymStrategy::judgeIfSynonym(String, String):判断两Token是否为同义词
@@ -292,6 +295,24 @@ KeyFilter接口定义了所有关键字Filter类必须实现的接口，便于Fi
 
 ---
 
+#### IDataService接口 ####
+##### 接口职责 #####
+IDataService接口是为了使用代理模式，避免直接操作数据库而产生的接口，具体设计原因可参照设计模式中的代理模式中的详细描述。该接口主要定义了读取和存储两个方法
+
+
+##### 接口方法 #####
+* public void persist(Map\<Key, Commodity\>)
+	* 职责：存储商品
+	* 前置条件：商品关键字已经过过滤处理
+	* 后置条件：持久化商品信息并建立索引
+* public List\<Commodity\> getCommodityByKey(Set\<Key\>);
+	* 职责：根据关键字返回相关度最高的商品信息
+	* 前置条件：关键字已经经过过滤
+	* 后置条件：返回相关度最高的商品信息
+
+---
+
+
 #### DataService类 ####
 ##### 类职责 #####
 DataService类负责封装与数据库交互的实现，并对外提供存储以及根据索引访问的接口。除了存储商品信息外，DataService还需要根据对关键字建立倒序索引，即每个关键字在哪些商品的信息描述中出现了。这些都是必要的，将极大程度的改善搜索的效率。
@@ -305,73 +326,13 @@ DataService类负责封装与数据库交互的实现，并对外提供存储以
 	* 职责：存储商品
 	* 前置条件：商品关键字已经过过滤处理
 	* 后置条件：持久化商品信息并建立索引
-* public List\<Commodity\> find(Set\<Key\>)
+* public List\<Commodity\> getCommodityByKey(Set\<Key\>);
 	* 职责：根据关键字返回相关度最高的商品信息
 	* 前置条件：关键字已经经过过滤
 	* 后置条件：返回相关度最高的商品信息
 
 ---
 
-#### SearchService类 ####
-##### 类职责 #####
-该类为SearchEngine模块的两大核心类之一，主要负责提供搜索服务。它持有一个QueryInterpreter的实例，用于解析用户查询的语句，并持有DataServiceProxy的实例，用于
-负责根据关键字检索信息。
-
-##### 类方法 #####
-* public List<Commodity> search(String)
-	* 职责：对外提供的接口，提供搜索功能
-	* 前置条件：无
-	* 后置条件：返回搜索结果
-
-* private getCommodityData(Set\<Key\>):Map<\Key,Commodity\>
-	* 职责：调用DataServiceProxy搜索并返回结果
-	* 前置条件：无
-	* 后置条件：返回关键词Set所相关联的商品信息
-
-
----
-
-#### IndexBuilderStrategy接口 & 实现类 ####
-##### 类职责 #####
-为了能够更好地复用索引建立策略，更加符合开闭原则，避免未来可能的对算法的修改破坏原来类的封装性，于是将行为抽象成接口，并将实现放在策略类的具体实现类中。
-##### 类方法 #####
-* public void buildIndex(Map<Key, Commodity>)
-	* 职责：根据关键词和商品信息建立关键词到商品信息的索引
-	* 前置条件：关键词已经经过处理
-	* 后置条件：建立关键词到商品信息的索引
-
----
-#### RelationComputeStrategy接口 & 实现类 ####
-##### 类职责 #####
-本类职责为计算类的关键词的相关性，相关性越高的商品才返回的结果中排序越靠前，由于该算法易于变化且应有多种实现，因此抽象出来形成接口。
-
-##### 类方法 #####
-* public double computeRelationalPower(Set<Key>, Commodity);
-	* 职责：根据关键词和商品信息计算商品信息的相关度，相关度越高，匹配越强
-	* 前置条件：无
-	* 后置条件：返回该商品与关键词的匹配度
-
----
-
-
-
-#### QueryInterpreter类 ####
-##### 类职责 #####
-QueryInterpreter类负责解析前端传来的查询语句，并转化为Query类存储，由于解析方式可能会变化，因此将解析的实现置于QueryInterpretStrategy接口的实现中。
-
-##### 类方法 #####
-+ public Query interpreteQuery(String):
-	* 职责：解析用户查询语句，将之转化为Query，Query内含有关键字等信息,需要调用Filter解析关键字
-	* 前置条件：String符合定义的查询语法
-	* 后置条件：返回经过解释的Query对象
-+ private void filter(Set\<Key\>):
-	* 职责：过滤关键词，以便使得用户搜索的关键词与系统存储时的关键词相匹配从而顺利搜索
-	* 前置条件：已经解析出用户搜索的关键词
-	* 后置条件：返回经过处理后的关键词
-
-** Strategy **
-
----
 
 #### DataServiceProxy类 ####
 ##### 类职责 #####
@@ -402,6 +363,70 @@ QueryInterpreter类负责解析前端传来的查询语句，并转化为Query�
 	* 后置条件：返回关键字对应的商品信息
 
 ---
+
+
+
+#### SearchService类 ####
+##### 类职责 #####
+该类为SearchEngine模块的两大核心类之一，主要负责提供搜索服务。它持有一个QueryInterpreter的实例，用于解析用户查询的语句，并持有DataServiceProxy的实例，用于
+负责根据关键字检索信息。
+
+##### 类方法 #####
+* public List\<Commodity\> search(String)
+	* 职责：对外提供的接口，提供搜索功能
+	* 前置条件：无
+	* 后置条件：返回搜索结果
+
+* private getCommodityData(Set\<Key\>):Map<\Key,Commodity\>
+	* 职责：调用DataServiceProxy搜索并返回结果
+	* 前置条件：无
+	* 后置条件：返回关键词Set所相关联的商品信息
+
+
+---
+
+#### IndexBuilderStrategy接口 & 实现类 ####
+##### 类职责 #####
+为了能够更好地复用索引建立策略，更加符合开闭原则，避免未来可能的对算法的修改破坏原来类的封装性，于是将行为抽象成接口，并将实现放在策略类的具体实现类中。
+##### 类方法 #####
+* public void buildIndex(Map<Key, Commodity>)
+	* 职责：根据关键词和商品信息建立关键词到商品信息的索引
+	* 前置条件：关键词已经经过处理
+	* 后置条件：建立关键词到商品信息的索引
+
+---
+#### RelationComputeStrategy接口 & 实现类 ####
+##### 类职责 #####
+本类职责为计算类的关键词的相关性，相关性越高的商品才返回的结果中排序越靠前，由于该算法易于变化且应有多种实现，因此抽象出来形成接口。
+
+##### 类方法 #####
+* public double computeRelationalPower(Set\<Key\>, Commodity);
+	* 职责：根据关键词和商品信息计算商品信息的相关度，相关度越高，匹配越强
+	* 前置条件：无
+	* 后置条件：返回该商品与关键词的匹配度
+
+---
+
+
+
+#### QueryInterpreter类 ####
+##### 类职责 #####
+QueryInterpreter类负责解析前端传来的查询语句，并转化为Query类存储，由于解析方式可能会变化，因此将解析的实现置于QueryInterpretStrategy接口的实现中。
+
+##### 类方法 #####
++ public Query interpreteQuery(String):
+	* 职责：解析用户查询语句，将之转化为Query，Query内含有关键字等信息,需要调用Filter解析关键字
+	* 前置条件：String符合定义的查询语法
+	* 后置条件：返回经过解释的Query对象
++ private void filter(Set\<Key\>):
+	* 职责：过滤关键词，以便使得用户搜索的关键词与系统存储时的关键词相匹配从而顺利搜索
+	* 前置条件：已经解析出用户搜索的关键词
+	* 后置条件：返回经过处理后的关键词
+
+** Strategy **
+
+---
+
 
 
 #### CacheMessageHolder类 ####
@@ -445,8 +470,46 @@ QueryInterpreter类负责解析前端传来的查询语句，并转化为Query�
 
 ### 策略模式 ###
 
+>策略模式作为一种软件设计模式，指对象有某个行为，但是在不同的场景中，该行为有不同的实现算法。-- wikipedia
+
+在Search Engine模块中，由于外界因素的不确定性，搜索的具体实现细节可能会不断地变化，为了符合开闭原则，应当避免在修改搜索策略时破坏已有代码的封装，为此，SearchEngine模块中大量使用了策略模式，将易于变化的部分独立出来，声明一个策略接口，含有算法的接口，并将实现存放于具体的策略实现子类，实现了将算法的具体实现推迟到了运行时的绑定，使得修改策略仅需要实现一个新的策略实现子类即可，并调用setStrategy()方法修改策略即可，从而保证了高内聚和低耦合
+
+#### 类图体现 ####
+
+![StrategyPatternClassShow](assets/czq/StrategyPatternClassShow.png)
+策略模式在类图中多处有体现，这里不一一赘述，只举一例说明。
+
 ---
 ### 工厂模式 ###
+> 工厂方法模式（Factory method pattern）是一种实现了“工厂”概念的面向对象设计模式。就像其他创建型模式一样，它也是处理在不指定对象具体类型的情况下创建对象的问题。工厂方法模式的实质是“定义一个创建对象的接口，但让实现这个接口的类来决定实例化哪个类。工厂方法让类的实例化推迟到子类中进行。--wikipedia
+
+本模块中存在多个过滤器，且在将来可能会有增加或删除，为了避免Filter类中大量创建过滤器所带来的高耦合，将过滤器的创建独立出来，使用工厂模式，定义FilterFactory接口，统一定义了创建过滤器的接口（getFilter(FilterType type):KeyFilter）,而工厂子类如StemFilterFactory，LowercaseFactory等则负责建立具体的子类。
+
+由于使用了面向对象的多态性，使得工厂方法模式可以允许系统在不修改工厂角色的情况下引进新的过滤器。
+
+
+#### 类图体现 ####
+
+![FactoryPatternClassDiagram](assets/czq/FactoryPatternClassDiagram.png)
+
 ---
 ### 代理模式 ###
+> 代理模式 (Proxy Pattern) 是程序设计中的一种设计模式。
+所谓的代理者是指一个类别可以作为其它东西的接口。代理者可以作任何东西的接口：网络连接、存储器中的大对象、文件或其它昂贵或无法复制的资源。 --wikipedia
+
+使用代理模式可以创造代表对象，让代表对象控制对某对象的访问，被代理的对象可以是远程的对象，创建开销大的对象，或者需要安全控制的对象。使用代理模式处于以下考量：
+
+* 本系统中，DataService类似对数据库的核心访问类，会在多个数据库节点上提供对数据库的访问，有可能不与Proxy类在同一个服务器节点上，但是对于搜索和存储模块这部分应该是隐藏的
+* 出于数据安全的重要性，需要保证这个类不会被外界的恶意指令所干扰，Proxy类可以做安全检查和拦截，避免外界指令直接访问数据库核心类
+* 并且对于不同的访问来源，如搜索模块，不允许其调用DataService除了搜索之外的接口，Proxy可以拦截这些非法请求。
+* 在搜索时，proxy模式可以判断缓存处理，判断是否在缓存中，若在缓存中，则直接返回缓存中的数据，减少了对昂贵的数据库的访问次数
+
+因此，本模块中对DataService类使用代理类
+
+#### 类图体现 ####
+
+![ProxyPatternClassDiagram](assets/czq/ProxyPatternClassDiagram.png)
+
+
+
 
