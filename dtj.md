@@ -62,7 +62,7 @@ JSONArray getData();
 
 ## 二、类图 ##
 
-![](/assets/CrawlerLib类图.png)
+![](/assets/dtj/CrawlerLib类图.png)
 
 
 
@@ -146,8 +146,23 @@ Item Pipeline负责处理被spider提取出来的item。当Item在Spider中被�
 * +urlcleanup():void----清除产生的缓存
 
 # 四、重要协作 #
+##顺序图
+![](/assets/dtj/crawlerLib顺序图.png)
+##协作描述
 
+初始化时，引擎打开一个网站，从spider获取到URL后由Scheduler进行调度，接着下载器下载下一个页面，返回一个Response，由Spider来处理Response并将Item返回给引擎，引擎再交给ItemPipeline处理。重复以上步骤直到调度器没有更多的Request。
 # 五、使用的设计模式 #
+##中介者模式
+
+###使用场景
+###要达到的效果
+
+
+
+
+
+
+
 
 
 
