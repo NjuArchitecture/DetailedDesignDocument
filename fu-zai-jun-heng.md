@@ -72,15 +72,15 @@
 ##### 类属性 #####
 
 
-* bool isStaticServer
+* bool isStaticServer  //server列表是否是静态的
 
-* bool ping
+* bool ping   //是否使用ping命令检测server状态
 
-* loadBalanceRuleClass
+* loadBalanceRuleClass	//负载均衡的策略类
 
-* registerServerType : String
+* String registerServerType	//注册中心的类型
 
-* registerServerHost : String
+* String registerServerHost   //注册中心的地址
 
 ---
 
@@ -91,15 +91,15 @@
 
 ##### 类方法 #####
 
-ConfigBuilder : staticServerList(bool)
+* ConfigBuilder staticServerList(bool)
 
-ConfigBuilder : ping(bool)
+* ConfigBuilder ping(bool)
 
-ConfigBuilder : loadBalanceStrategy(Obj)
+* ConfigBuilder loadBalanceStrategy(Obj)
 
-ConfigBuilder : registerServer(String type,String host)
+* ConfigBuilder registerServer(String type,String host)
 
-Config : build()
+* Config build()
 
 ---
 
