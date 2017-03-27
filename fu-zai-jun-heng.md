@@ -64,41 +64,46 @@
 
 ---
 
-#### TempSave类 ####
+#### Config类 ####
 ##### 类职责 #####
-本类的职责是暂时存储DataProvider传过来的大量数据，并以流的方式提供商品的数据。
 
-##### 类方法 #####
-* public void addCommodity(List\<Commodity\>)
-	* 职责：增加商品信息到临时存储空间中
-	* 前置条件：类初始化完成
-	* 后置条件：将商品信息转化成流式暂时存储
+负载均衡模块的配置,包括服务列表是否静态,是否启用ping检测服务健康,负载均衡算法,配置中心的信息等.
 
-* public void getCommodity():Stream\<Commodity\>
-	* 职责：返回缓存池里未持久化的信息
-	* 前置条件：类初始化完成
-	* 后置条件：返回未持久化的商品信息
+##### 类属性 #####
+
+
+* bool isStaticServer
+
+* bool ping
+
+* loadBalanceRuleClass
+
+* registerServerType : String
+
+* registerServerHost : String
 
 ---
 
-#### PreProcessing类 ####
+#### ConfigBuilder类 ####
 ##### 类职责 #####
-本类的职责主要是预处理Commodity，并将预处理过后的Commodity信息以流的形式返回。
-可能的预处理逻辑包括增加域，修改域的信息，如将字符串时间转化为时间戳等
-预处理的逻辑可能变化，因此采用策略模式，将具体的预处理逻辑放在PreProcessStrategy中
+
+因为Config类构造过程比较复杂,而且将来的配置项可能增多.因此使用专门的Builder来构造Config
 
 ##### 类方法 #####
-* public void getCommodity():Stream\<Commodity\>
-	* 职责：返回预处理后的信息
-	* 前置条件：从TempSave类处获取数据
-	* 后置条件：返回预处理后的商品信息流
 
-* private void process()
-	* 职责：预处理信息，调用PreProcessStrategy实现
-	* 前置条件：预处理策略已设置
-	* 后置条件：完成预处理
+ConfigBuilder : staticServerList(bool)
+
+ConfigBuilder : ping(bool)
+
+ConfigBuilder : loadBalanceStrategy(Obj)
+
+ConfigBuilder : registerServer(String type,String host)
+
+Config : build()
 
 ---
+
+
 
 
 
