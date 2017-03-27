@@ -130,6 +130,36 @@
 	
 ---
 
+
+
+#### LoadBalancer类 ####
+##### 类职责 #####
+
+负责一个具体服务的负载均衡.包括挑选服务器,维护服务器列表等.
+
+##### 类方法 #####
+* public Server selectServer(Requesst)
+	* 职责：选择一个被调用的Server
+	* 前置条件：配置正确,服务正常启动
+	* 后置条件：无
+* public Object execute(Server)
+	* 职责：对指定的Server执行调用
+	* 前置条件: Server的信息正确
+	* 后置条件：无
+* public void initServer()
+	* 职责：初始化Server的列表
+	* 前置条件：关于列表的配置正确
+	* 后置条件：server列表被初始化
+* public void updateServer()
+	* 职责：更新Server的列表
+	* 前置条件：列表已被初始化
+	* 后置条件：列表被更新
+
+	
+---
+
+
+
 ## 三、重要协作 ##
 ### 顺序图 ###
 ####  存储模块顺序图 ####
