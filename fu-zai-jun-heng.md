@@ -1,14 +1,6 @@
 # LoadBalance 模块
 
-## 词汇表
 
-| 英文 | 中文 | 备注 |
-| :--- | :--- | :--- |
-| Tokenlization | 序列化 |  |
-|  | Normalization | 标准化 |
-| Front Service | 前端服务 | 前端是相对而言的,这里是指调用搜索服务的一方 |
-| Data Provider | 数据提供者 | 如爬虫 |
-| Query | 查询语言 | 内部定义的查询语言类 |
 
 ## 一、概述
 
@@ -225,6 +217,9 @@ VO类,记录Server的各类属性
 
 ### 策略模式
 
+![](/assets/sbin/负载均衡策略.png)
+
+
 负载均衡模块有两处使用了策略模式.分别是负载均衡的策略和服务列表更新的策略.
 
 **负载均衡策略**
@@ -234,8 +229,16 @@ VO类,记录Server的各类属性
 **服务更新策略**
 
 服务列表可以来源于注册中心或手动配置.使用注册中心这意味着不需要自己去检测其状态,只需要监听即可.手动配置时需要定期ping服务器已确定其状态.这里采用不同的UpdateStrategy封装.
-![](/assets/sbin/负载均衡策略.png)
+
 
 ### 适配器模式
 
+![](/assets/sbin/负载均衡Adpter.png)
+
 对于面向注册中心的服务更新,需要监听Register发来的变化.这里让RegisterUpdateStrategy适配RegisterObserver接口,以监听变化并完成更新.
+
+### Builder
+
+![](/assets/sbin/负载均衡Builder.png)
+
+负载均衡的Config类是复杂的,并且其数据可能来源于配置文件,硬编码或者网络,因此使用Builder来处理其构造过程.![](/assets/负载均衡Builder.png)
