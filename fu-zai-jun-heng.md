@@ -150,22 +150,36 @@
 负载均衡算法的策略接口的一种实现,采用随机法选取服务器,
 
 ##### 类方法 #####
-* public Server selectServer(Requesst)
-	* 职责：选择一个被调用的Server
+* public Server choose(ServerList,Requesst)
+	* 职责：用随机法从List中选取一个Server
 	* 前置条件：配置正确,服务正常启动
 	* 后置条件：无
-* public Object execute(Server)
-	* 职责：对指定的Server执行调用
-	* 前置条件: Server的信息正确
-	* 后置条件：无
-* public void initServer()
-	* 职责：初始化Server的列表
-	* 前置条件：关于列表的配置正确
-	* 后置条件：server列表被初始化
-* public void updateServer()
-	* 职责：更新Server的列表
-	* 前置条件：列表已被初始化
-	* 后置条件：列表被更新
+
+---
+
+#### UpdateStrategy类 ####
+##### 类职责 #####
+
+服务器列表的更新策略,负责服务器列表的增删.
+
+##### 类方法 #####
+* public void update(ServerList)
+	* 职责：对服务器列表进行增删
+	* 前置条件：服务器列表需要发生变动
+	* 后置条件：服务器列表变动
+
+---
+
+#### RegisterUpdateStrategy类 ####
+##### 类职责 #####
+
+服务器列表的更新策略,负责服务器列表的增删.
+
+##### 类方法 #####
+* public void update(ServerList)
+	* 职责：对服务器列表进行增删
+	* 前置条件：服务器列表需要发生变动
+	* 后置条件：服务器列表变动
 
 ---
 
