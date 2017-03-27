@@ -117,10 +117,36 @@ Spider类定义了如何爬取某个(或某些)网站。包括了爬取的动作
  
  * -process_links:String----该spider中同名的函数将会被调用。 从extract_links()中获取到链接列表时将会调用该函数。该方法主要用来过滤  
  
- * -process_request:String----该spider中同名的函数将会被调用。 该规则提取到每个request时都会调用该函数。该函数必须返回一个request或者None。 (用来过滤request)
+ * -process_request:String----该spider中同名的函数将会被调用。 该规则提取到每个request时都会调用该函数。该函数必须返回一个request或者None。 (用来过滤request)  
  
+###Scheduler类  
+调度器从引擎接受request并将它们入队，以便之后引擎请求他们时提供给引擎。
+* +enqueue(request): void----接受request并将它们入队
+
+* +dequeue(): void----将request出队返回给Engine  
+
+###ItemPipeline类  
+Item Pipeline负责处理被spider提取出来的item。当Item在Spider中被收集之后，它将会被传递到Item Pipeline，一些组件会按照一定的顺序执行对Item的处理。
+* +process_item(item, spider):Item----清理HTML数据,验证爬取的数据(检查item包含某些字段),查重(并丢弃)
+
+* +open_spider(spider): boolean----当spider被开启时，这个方法被调用
+* +close_spider(spider):boolean----当spider被关闭时，这个方法被调用  
+
+###DownloaderMiddleware类  
+ 下载器中间件是在引擎及下载器之间的specific hook，处理Downloader传递给引擎的response。  
+ 
+* +process_request(request, spider):Response----当每个request通过下载中间件时，该方法被调用。如果其返回 None ，Scrapy将继续处理该request
+
+* +process_response(request, response, spider):Response----返回的response会被在链中的其他中间件的 process_response() 方法处理。  
+
+###Downloader类
+下载器负责获取页面数据并提供给引擎，而后提供给spider。调用python的urllib。  
+* +urlopen(url[,data[,proxies]]): file----打开一个url的方法，返回一个文件对象  
+
+* +urlcleanup():void----清除产生的缓存
+
 # 四、重要协作 #
-顺序图与协作描述
+
 # 五、使用的设计模式 #
 
 
