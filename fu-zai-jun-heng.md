@@ -50,9 +50,10 @@
 ![](/assets/sbin/LoadBalanceClass.png)
 
 ### 2.2 类描述 ###
-#### PersistenceService类 ####
+#### LoadBalancerClient类 ####
 ##### 类职责 #####
-本类为SearchEngine模块的核心类之一，为存储模块的核心控制器，存储模块采用的设计风格为主程序-子程序风格，而PersistenceService类内持有TempSave、Preprocessing等类的引用，并封装了存储的逻辑。
+
+本类是LoadBalancer模块的门面,提供execute方法来发起服务调用
 
 
 ##### 类方法 #####
