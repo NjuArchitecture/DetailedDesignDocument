@@ -235,3 +235,7 @@ VO类,记录Server的各类属性
 
 服务列表可以来源于注册中心或手动配置.使用注册中心这意味着不需要自己去检测其状态,只需要监听即可.手动配置时需要定期ping服务器已确定其状态.这里采用不同的UpdateStrategy封装.
 ![](/assets/sbin/负载均衡策略.png)
+
+### 适配器模式
+
+对于面向注册中心的服务更新,需要监听Register发来的变化.这里让RegisterUpdateStrategy适配RegisterObserver接口,以监听变化并完成更新.
