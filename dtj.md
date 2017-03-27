@@ -60,16 +60,60 @@ JSONArray getData();
 "shop":店铺
 ```
 
-## 类图 ##
+## 二、类图 ##
 
-![Picture Name](assets/dtj/CrawlerLib类图.png)
+![](/assets/CrawlerLib类图.png)
 
-## 类描述 ##
 
-类方法（重要方法要给出前置与后置条件）与重要数据结构描述
-# 重要协作 #
+
+## 三、类描述 ##
+
+###Engine类
+负责控制数据流在系统中所有组件中流动，并在相应动作发生时触发事件。    
+
+* +openDomain()：void----打开一个网站  
+
+* +getFirstUrl():void----在Scheduler调度第一个URL  
+
+* +getNextUrl(): void----请求下一个要爬取的URL  
+
+* -redirectRespons():void----将Scheduler返回的URL通转发给Downloader
+
+* -passItem2Pipeline():void----将Downloader中返回的Response交给Spider处理
+
+###Spider类
+Spider类定义了如何爬取某个(或某些)网站。包括了爬取的动作(例如:是否跟进链接)以及如何从网页的内容中提取结构化数据(爬取item)。每个spider负责处理一个特定(或一些)网站。  
+ 
+* +startRequests():Request----当spider启动爬取并且未制定URL时，该方法被调用  
+ 
+* +parse(response):List----parse 负责处理response并返回处理的数据以及(/或)跟进的URL  
+
+* -log(message[, level, component]):void----记录(log)message  
+
+* +closed(reason):boolean----当spider关闭时，该函数被调用。    
+
+###Spider4Web1/2类
+是适用于具体网站 Website1 / Website2的爬虫类。  
+
+* +setRule():void----设置Rule对象集合。  
+
+* -parse_start_url(response):Request----当start_url的请求返回时，该方法被调用。 该方法分析最初的返回值并必须返回一个 Item 对象    
+
+###Rule类
+ 每个 Rule 对爬取网站的动作定义了特定表现。  
+ * extract_links():List----它接收一个 Response 对象,从网页中抽取最终将会被链接的对象。  
+ 
+ * callback该spider中同名的函数将会被调用。 从extract_links中每次获取到链接时将会调用该函数。  
+ 
+ *  -allow:reg----必须要匹配这个正则表达式(或正则表达式列表)的URL才会被提取｡
+  
+ * deny: reg----与这个正则表达式(或正则表达式列表)的(绝对)不匹配的URL必须被排除在外(即不提取)｡   
+ 
+ *  
+ 
+# 四、重要协作 #
 顺序图与协作描述
-# 使用的设计模式 #
+# 五、使用的设计模式 #
 
 
 
