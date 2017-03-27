@@ -110,15 +110,24 @@
 负责一个具体服务的负载均衡.包括挑选服务器,维护服务器列表等.
 
 ##### 类方法 #####
-* public isInCache(Key):boolean
-	* 职责：判断关键字是否位于缓存中
-	* 前置条件：关键词经过处理
-	* 后置条件：返回关键词是否位于Cache中
-* public Collection\<Commodity\> getCommodityFromCache(Set\<Key\>)
-	* 职责：从缓存中读取关键字所对应的商品信息
-	* 前置条件：关键字的相关结果位于缓存中
-	* 后置条件：返回关键字对应的商品信息
+* public Server selectServer(Requesst)
+	* 职责：选择一个被调用的Server
+	* 前置条件：配置正确,服务正常启动
+	* 后置条件：无
+* public Object execute(Server)
+	* 职责：对指定的Server执行调用
+	* 前置条件: Server的信息正确
+	* 后置条件：无
+* public void initServer()
+	* 职责：初始化Server的列表
+	* 前置条件：关于列表的配置正确
+	* 后置条件：server列表被初始化
+* public void updateServer()
+	* 职责：更新Server的列表
+	* 前置条件：列表已被初始化
+	* 后置条件：列表被更新
 
+	
 ---
 
 ## 三、重要协作 ##
