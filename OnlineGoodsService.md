@@ -9,16 +9,16 @@
 * 可能会修改数据库表结构的设计。
 
 ### 设计概述 ###
-
+因为进行的是异步请求，而且数据库的操作开销会比较大，所以可以先将从Item Pipeline中传来的数据放入buffer中，等缓冲区满了再写入数据库。
 
 
 ### 角色 ###
-在整个系统中扮演商品数据信息获取的角色，并将提取的商品信息传递给数据处理模块。
+处理商品信息，负责将数据更新到数据库中。
 
 
 ### 对外接口 ###
 ```java
-JSONArray getData();
+void saveData();
 ```
 ## 二、类图 ##
 
@@ -29,64 +29,38 @@ JSONArray getData();
 ## 三、类描述 ##
 
 ###UpdatorController类
-负责控制数据流在系统中所有组件中流动，并在相应动作发生时触发事件。    
+爬虫数据更新模块的集中控制类，其中包括分析处理过后的规范化数据和一个更新器。
+* startUpdate():void----开始数据的更新 
 
-* +openDomain()：void----打开一个网站  
 
-* +getFirstUrl():void----在Scheduler调度第一个URL  
-
-* +getNextUrl(): void----请求下一个要爬取的URL  
-
-* -redirectRespons():void----将Scheduler返回的URL通转发给Downloader
-
-* -passItem2Pipeline():void----将Downloader中返回的Response交给Spider处理
-
-###Spider类
-Spider类定义了如何爬取某个(或某些)网站。包括了爬取的动作(例如:是否跟进链接)以及如何从网页的内容中提取结构化数据(爬取item)。每个spider负责处理一个特定(或一些)网站。  
+###Updator类
+定义RealUpdator和BufferProxy的公用接口，这样就在任何使用RealUpdator的地方都可以使用Proxy。
  
-* +startRequests():Request----当spider启动爬取并且未制定URL时，该方法被调用  
+* +saveData():List----数据更新方法  
+
+###RealUpdator类
+是爬虫数据更新模块的更新器，负责对数据进行更新。当缓存满时被调用。
+
+* +saveData(List buffer):void----数据更新方法，将数据存储到数据库  
+
+###BufferProxy类
+ 保存一个RealUpdator的引用，接受Item Pipeline传来的数据.
+ * +saveData():void----若缓冲区未满则将数据存入缓冲区，若缓冲区已满则将缓冲区的数据写入数据库。  
  
-* +parse(response):List----parse 负责处理response并返回处理的数据以及(/或)跟进的URL  
-
-* -log(message[, level, component]):void----记录(log)message  
-
-* +closed(reason):boolean----当spider关闭时，该函数被调用。    
-
-###Spider4Web1/2类
-是适用于具体网站 Website1 / Website2的爬虫类。  
-
-* +setRule():void----设置Rule对象集合。  
-
-* -parse_start_url(response):Request----当start_url的请求返回时，该方法被调用。 该方法分析最初的返回值并必须返回一个 Item 对象    
-
-###Rule类
- 每个 Rule 对爬取网站的动作定义了特定表现。  
- * extract_links():List----它接收一个 Response 对象,从网页中抽取最终将会被链接的对象
- 
- 
-
 # 四、重要协作 #
 ##顺序图
 ![](/assets/dtj/OnlineGoodsService顺序图.png)
 ##协作描述
+在数据更新时，更新控制类将待更新数据发送给 BufferProxy 类，如果此时缓冲区未满则将数据存入缓冲区，若缓冲区已满则调用RealUpdator的saveData()方法将缓冲区的数据写入数据库。 
 
-初始化时，引擎打开一个网站，从spider获取到URL后由Scheduler进行调度，接着下载器下载下一个页面，返回一个Response，由Spider来处理Response并将Item返回给引擎，引擎再交给ItemPipeline处理。重复以上步骤直到调度器没有更多的Request。
 # 五、使用的设计模式 
-##中介者模式
-![](/assets/dtj/中介者模式.png)
+##代理模式
+![](/assets/dtj/OnlineGoodsService类图.png)
 
 ###使用场景
-数据流需要在系统的所有组件中流动，会产生混乱的相互依赖关系，所以使用Engine来控制交互。
+因为连接数据库的开销比较大，所以将对数据库的访问进行限制，在需要的时候实例化真正的实体类再进行访问。
 ###要达到的效果
-可以使各对象不需要显式地互相引用，从而使其耦合松散，而且可以独立地改变它们之间的交互。它使数据流的控制都集中在了Engine里。  
-
-##策略模式
-![](/assets/dtj/策略模式.png)
-
-###使用场景
-对于不同的网站，爬取网页的规则不同，而这些规则又可能会改变，之后还会增加新的网站，因此可以定义一些类来封装不同的抓取网页的规则和提取数据的规则，将这些变化封装起来，使得这些规则可以独立于使用它的客户而变化。
-###要达到的效果
-消除了一些条件语句，使Spider不必再进行网站的条件语句判断。当需要增加新的网站时，只需要新增一个Spider的子类，封装好该网站的爬取规则和数据提取规则，而不必再修改Engine类和其他类。
+引入了一定的间接性，可以进行最优化，根据需求写入数据库。
 
 
 
