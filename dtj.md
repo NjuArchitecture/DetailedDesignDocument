@@ -115,7 +115,9 @@ Spider类定义了如何爬取某个(或某些)网站。包括了爬取的动作
  
  *  -follow:boolean----指定了根据该规则从response提取的链接是否需要跟进  
  
- * -process_links:String----该spider中同名的函数将会被调用。 从extract_links()中获取到链接列表时将会调用该函数。该方法主要用来过滤。
+ * -process_links:String----该spider中同名的函数将会被调用。 从extract_links()中获取到链接列表时将会调用该函数。该方法主要用来过滤  
+ 
+ * -process_request:String----该spider中同名的函数将会被调用。 该规则提取到每个request时都会调用该函数。该函数必须返回一个request或者None。 (用来过滤request)
  
 # 四、重要协作 #
 顺序图与协作描述
