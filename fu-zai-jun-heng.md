@@ -57,14 +57,10 @@
 
 
 ##### 类方法 #####
-* private void init(): 
-	* 职责：初始化组件，检查数据库连通性
-	* 前置条件：系统初始化完成
+* public Object execute(Request request): 
+	* 职责：发起一次请求
+	* 前置条件：配置正确,服务初始化成功
 	* 后置条件：完成PersistenceService类的初始化
-* public void persistCommodity(Collection\<Commodity\>); 核心对外接口，提供持久化商品的接口
-	* 职责：持久化商品信息
-	* 前置条件：类初始化完成
-	* 后置条件：持久化商品数据，并建立索引
 
 ---
 
