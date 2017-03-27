@@ -131,11 +131,23 @@
 ---
 
 
-
-#### LoadBalancer类 ####
+#### LoadBalanceStrategy类 ####
 ##### 类职责 #####
 
-负责一个具体服务的负载均衡.包括挑选服务器,维护服务器列表等.
+负载均衡算法的策略接口,从Server列表中选出一个Server.
+
+##### 类方法 #####
+* public Server choose(ServerList,Requesst)
+	* 职责：从list中选一个server
+	* 前置条件：List不为空
+	* 后置条件：无
+
+---
+
+#### RandomStrategy类 ####
+##### 类职责 #####
+
+负载均衡算法的策略接口的一种实现,采用随机法选取服务器,
 
 ##### 类方法 #####
 * public Server selectServer(Requesst)
@@ -155,9 +167,7 @@
 	* 前置条件：列表已被初始化
 	* 后置条件：列表被更新
 
-	
 ---
-
 
 
 ## 三、重要协作 ##
