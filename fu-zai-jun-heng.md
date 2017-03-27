@@ -41,8 +41,8 @@
 
 ### 模块对外接口 ###
 
-1. Collection\<CommodityInfo\> **search**(String message, Collection\<Option\> Options);
-2. void **persist**(Collection\<CommodityInfo\> commodities);
+1. Object **execute**(Request request);
+
 
 
 ## 二、类的设计 ##
