@@ -188,5 +188,6 @@ public Response request\(Request\)
 ### 过滤器模式
 
 为了方便的向controller添加切面逻辑,WebServer中采用了过滤器模式.可以通过Filter来向controller处理的前后添加功能.
+![](/assets/sbin/WebServerFilter.png)
 
 
