@@ -185,9 +185,8 @@ public Response request\(Request\)
 
 ## 四、设计模式应用
 
-### 策略模式
+### 过滤器模式
 
-为了方便拓展不同的通知方式,使用了策略模式对notifier进行抽象
+为了方便的向controller添加切面逻辑,WebServer中采用了过滤器模式.可以通过Filter来向controller处理的前后添加功能.
 
-![](/assets/sbin/RegisterNotifier.png)
 
