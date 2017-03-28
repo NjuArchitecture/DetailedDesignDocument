@@ -180,12 +180,7 @@ public Response request\(Request\)
 
 ### 顺序图
 
-**注册及心跳顺序图**
-![](/assets/sbin/Register顺序图.png)
-
-**健康监测顺序图**
-
-![](/assets/sbin/健康检测顺序图.png)
+![](/assets/sbin/WebServer顺序图.png)
 ---
 
 ## 四、设计模式应用
