@@ -218,7 +218,7 @@ public void registerListener\(RegisterOberver\)
 
 ### 策略模式
 
-为了
+为了方便拓展不同的通知方式,使用了策略模式对notifier进行抽象
 
-
+![](/assets/sbin/RegisterNotifier.png)
 
