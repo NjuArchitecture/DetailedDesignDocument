@@ -26,7 +26,7 @@
 * 高效性
 
 ### 1.4 用例图
-![Pipe&Filter UserCase](assets/hq/Pipe&FilterUserCase.png)
+![Pipe&Filter UserCase](assets/hq/Pipe&Filter/Pipe&FilterUserCase.png)
 
 
 ### 1.5 用例描述
@@ -55,7 +55,7 @@
 供server传入待处理的数据，返回处理好的数据
 
 **接口方法**
-* public List\<T\> doFilter(List\<T\> list) ;
+* public List&lt<T&lt> doFilter(List&lt<T&lt> list) ;
 	* 职责：供server传入待处理的数据，返回处理好的数据
 	* 前置条件：输入流已就绪
 	* 后置条件：更新数据内容
@@ -67,7 +67,7 @@
 ### 2.1 类图
 - 采用组合模式设计类图
 
-![Pipe&Filter Class Diagram](assets/hq/Pipe&FilterClassDiagram.png)
+![Pipe&Filter Class Diagram](assets/hq/Pipe&Filter/Pipe&FilterClassDiagram.png)
 
 
 ### 2.2 类描述
@@ -82,7 +82,7 @@
 
 **类方法：**
 
-*  public  List\<T\> doFilter(List\<T\> list);
+*  public  List&lt<T&lt> doFilter(List&lt<T&lt> list);
 	* 职责：传入数据并按需处理再将数据返回 
 	* 前置条件：数据通过管道传递过来
 	* 后置条件：处理好的数据通过管道传出
@@ -96,13 +96,13 @@
 
 **类方法**
 
-* public void registerFilter(List\<iFilter\<T\>\> filter);
+* public void registerFilter(List&lt<iFilter&lt<T&lt>&lt> filter);
 	* 职责：供一个或多个过滤器注册
 	* 前置条件：filter已创建
 	* 后置条件：filter已注册完成
   
   
-* public List\<T\> doFilter(List\<T\> list);
+* public List &lt<T&lt> doFilter(List&lt<T&lt> list);
 	* 职责：对已注册的过滤器，管道传入数据，由过滤器按需处理，并返回处理好的数据
 	* 前置条件：输入流已就绪
 	* 后置条件：更新数据内容
@@ -114,16 +114,16 @@
 ### 3.1 流程图
 基本管道-过滤器模式的流程图如下：
 
-![Pipe&Filter FlowChart](assets/hq/Pipe&FilterFlowChart.png)
+![Pipe&Filter FlowChart](assets/hq/Pipe&Filter/Pipe&FilterFlowChart.png)
 
 管道-过滤器模型适于数据流的处理和变换，不适合与用户交互频繁的系统建模。在这种模型中，每个过滤器都有自己的数据，整个系统没有一个共享的数据区。这样，对于需要多个过滤器处理某一项数据时，实现较为复杂。为解决管道-过滤器模型这一交互式处理能力若的特点，可以对每个过滤器增加相应的用户控制接口，使得外部可以对过滤器的执行进行控制。
 
-![filterWithUserControllerInterface](assets/hq/filterWithUserControllerInterface.png)
+![filterWithUserControllerInterface](assets/hq/Pipe&Filter/filterWithUserControllerInterface.png)
 
 
 整个系统的体系结构流程图如下：
 
-![Pipe&FilterFlowChart1](assets/hq/Pipe&FilterFlowChart1.png)
+![Pipe&FilterFlowChart1](assets/hq/Pipe&Filter/Pipe&FilterFlowChart1.png)
 
 ### 3.2 状态图
 设计过滤器状态有如下：停止状态，工作状态，等待状态，休眠状态。
@@ -136,12 +136,12 @@
 
 休眠状态：表示多启动，但被挂起。挂起的原因可能是由于外界用于要设置过滤器的控制参数，这样暂时将过滤器挂起但不中止它，，当控制参数设置完毕后再将过滤器还原，继续运行。这样，实现了较高的效率。
 
-![Pipe&FilterStateChart](assets/hq/Pipe&FilterStateChart.png)
+![Pipe&FilterStateChart](assets/hq/Pipe&Filter/Pipe&FilterStateChart.png)
 
 ### 3.3 顺序图
 管道过滤器模块顺序图
 
-![Pipe&FilterSequenceDiagram](assets/hq/Pipe&FilterSequenceDiagram.png)
+![Pipe&FilterSequenceDiagram](assets/hq/Pipe&Filter/Pipe&FilterSequenceDiagram.png)
 
 协作描述
 
@@ -172,7 +172,7 @@
 
 **组合模式在类图中的体现**
 
-![Pipe&Filter Class Diagram](assets/hq/Pipe&FilterClassDiagram.png)
+![Pipe&Filter Class Diagram](assets/hq/Pipe&Filter/Pipe&FilterClassDiagram.png)
 
 **要达到的效果**
 
