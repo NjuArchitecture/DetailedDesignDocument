@@ -114,20 +114,66 @@ public Response request\(Request\)
 ---
 
 
-#### ClientNotifer类
+#### CommentService类
 
 ##### 类职责
 
-通知策略的实现类.完成向客户端通信的逻辑
+对评论API的封装,负责调用评论服务
 
 ##### 类方法
 
-* public Server notify\(List comsumer\)
-  * 职责：向列表中的comsumer进行通知
+* public List getComment\(goodsId\)
+  * 职责：获得某个商品的评论信息
   * 前置条件：List不为空
-  * 后置条件：发送通知
+  * 后置条件：请求被正确发送,返回结果正确
 
 ---
+
+#### LoadBalancer类
+
+##### 类职责
+
+来自LoadBalancer模块,负责对请求进行负载均衡.
+
+##### 类方法
+
+* public Response execute\(Request\)
+  * 职责：对请求进行负载均衡,选取一个服务器发起调用
+  * 前置条件：Request不为空,格式正确
+  * 后置条件：无
+
+---
+
+#### ViewResolver类
+
+##### 类职责
+
+选择视图,根据Model中的信息解析视图,生成页面
+
+##### 类方法
+
+* public Page render\(PageName,Model\)
+  * 职责：用视图名查找视图,解析并返回页面
+  * 前置条件：PageName存在
+  * 后置条件：无
+
+---
+
+#### Pages类
+
+##### 类职责
+
+来自CommentPages和SearchResultPages的模块,能根据Model的数据生成页面
+
+##### 类方法
+
+* public Page render\(Model\)
+  * 职责：根据Model中的数据生成页面
+  * 前置条件：Model数据完整
+  * 后置条件：无
+
+---
+
 
 
 ## 三、重要协作
