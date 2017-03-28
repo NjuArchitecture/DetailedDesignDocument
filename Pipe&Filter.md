@@ -55,11 +55,10 @@
 供server传入待处理的数据，返回处理好的数据
 
 **接口方法**
-*　public List\<T\> doFilter(List\<T\> list) 
-
-  * 职责：供server传入待处理的数据，返回处理好的数据
-  * 前置条件：输入流已就绪
-  * 后置条件：更新数据内容
+*　public List\<T\> doFilter(List\<T\> list) ;
+ * 职责：供server传入待处理的数据，返回处理好的数据
+ * 前置条件：输入流已就绪
+ * 后置条件：更新数据内容
   
 ## 二、类的设计
 ### 2.1 类图采用
@@ -80,11 +79,10 @@
 
 **类方法：**
 
-*  public  List\<T\> doFilter(List\<T\> list)
-
-  * 职责：传入数据并按需处理再将数据返回 
-  * 前置条件：数据通过管道传递过来
-  * 后置条件：处理好的数据通过管道传出
+*  public  List\<T\> doFilter(List\<T\> list);
+ *  职责：传入数据并按需处理再将数据返回 
+ *  前置条件：数据通过管道传递过来
+ *  后置条件：处理好的数据通过管道传出
 
 
 #### 2.2.3. iPipe类
@@ -94,24 +92,23 @@
 该类的职责是供Filter注册使用，并传输数据
 
 **类方法**
-* public void registerFilter(List\<iFilter\<T\>\> filter) 
 
-  * 职责：供一个或多个过滤器注册
-  * 前置条件：filter已创建
-  * 后置条件：filter已注册完成
+* public void registerFilter(List\<iFilter\<T\>\> filter);
+ * 职责：供一个或多个过滤器注册
+ * 前置条件：filter已创建
+ * 后置条件：filter已注册完成
   
   
-* public List\<T\> doFilter(List\<T\> list)
+* public List\<T\> doFilter(List\<T\> list);
+ *  职责：对已注册的过滤器，管道传入数据，由过滤器按需处理，并返回处理好的数据
+ *  前置条件：输入流已就绪
+ *  后置条件：更新数据内容
 
-  * 职责：对已注册的过滤器，管道传入数据，由过滤器按需处理，并返回处理好的数据
-  * 前置条件：输入流已就绪
-  * 后置条件：更新数据内容
-  
 ## 三、重要协作
 ### 3.1 流程图
 基本管道-过滤器模式的流程图如下：
 
-![Pipe&Filter FlowChart](assets/hq/Pipe&Filter FlowChart.png)
+![Pipe&Filter FlowChart](assets/hq/Pipe&FilterFlowChart.png)
 
 管道-过滤器模型适于数据流的处理和变换，不适合与用户交互频繁的系统建模。在这种模型中，每个过滤器都有自己的数据，整个系统没有一个共享的数据区。这样，对于需要多个过滤器处理某一项数据时，实现较为复杂。为解决管道-过滤器模型这一交互式处理能力若的特点，可以对每个过滤器增加相应的用户控制接口，使得外部可以对过滤器的执行进行控制。
 
