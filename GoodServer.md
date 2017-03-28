@@ -186,6 +186,9 @@
 ## 三、重要协作
 ### 3.1 顺序图
 
+
+![FlowChart](assets/hq/SearchServer/searchServerFlowChart.png)
+
 ---
 
 ## 四、设计模式应用
