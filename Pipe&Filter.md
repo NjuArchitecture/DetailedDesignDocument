@@ -6,7 +6,7 @@
 ### 1.2 质量属性要求
 管道与过滤器模块应该保证系统具有良好的隐蔽性和高内聚、低耦合；支持软件重用；允许设计者将整个系统的输入/输出行为看成多个过滤器的行为的简单合成；使系统易于维护和增强系统性能；支持并行执行。
 ### 1.3 用例图
-![Pipe&Filter UserCase](assets/hq/Pipe&Filter UserCase.png)
+![Pipe&Filter UserCase](assets/hq/Pipe&FilterUserCase.png)
 
 
 ### 1.4 用例描述
@@ -30,17 +30,23 @@
 过滤器输出数据到管道
 
 ### 1.7 对外接口
+
 与SearchServer和CommentServer之间的接口
 
-|接口名|职责|
-|--|--|
-|public List\<T\> doFilter(List\<T\> list) |供server传入待处理的数据，返回处理好的数据|
+**接口职责**
+供server传入待处理的数据，返回处理好的数据
 
+**接口方法**
+*　public List\<T\> doFilter(List\<T\> list) 
+  * 职责：供server传入待处理的数据，返回处理好的数据
+  * 前置条件：输入流已就绪
+  * 后置条件：更新数据内容
+  
 ## 二、类的设计
 ### 2.1 类图采用
 - 采用组合模式设计类图
 
-![Pipe&Filter Class Diagram](assets/hq/Pipe&Filter Class Diagram.png)
+![Pipe&Filter Class Diagram](assets/hq/Pipe&FilterClassDiagram.png)
 
 
 ### 2.2 类描述
@@ -49,33 +55,35 @@
 为了适用于一个或多个过滤器，并在不同情况下使用，以增加重用性，选择组合模式将过滤器抽象成接口，做到依赖抽象而不是实现，将具体实现封装。 在接口中申明doFilter方法并由具体的Filter类实现。
 
 #### 2.2.2. Filter1 类 、Filter2 类
+**类职责**
+
 这些类是iFilter接口的具体实现类，实现了接口中申明的方法，并且数量在未来可能增加
 
 **类方法：**
 
-| 类方法 | 描述     |
-| --- | ---|
-|  public  List\<T\> doFilter(List\<T\> list)| 传入数据并按需处理再将数据返回 |
-
-该类实现了接口中定义的doFilter方法，参数list为通过管道传入的需要处理的数据
-
-前置条件：数据通过管道传递过来
-
-后置条件：处理好的数据通过管道传出
+*  public  List\<T\> doFilter(List\<T\> list)
+  * 职责：传入数据并按需处理再将数据返回 
+  * 前置条件：数据通过管道传递过来
+  * 后置条件：处理好的数据通过管道传出
 
 
 #### 2.2.3. iPipe类
+
+**类职责**
+
 该类的职责是供Filter注册使用，并传输数据
 
 **类方法**
-
-| 类方法 | 描述 |
-| ---| --- |
-|public void registerFilter(List\<iFilter\<T\>\> filter) |供一个或多个过滤器注册|
-|public List\<T\> doFilter(List\<T\> list) |对已注册的过滤器，管道传入数据，由过滤器按需处理，并返回处理好的数据|
-
-
-
+* public void registerFilter(List\<iFilter\<T\>\> filter) 
+  * 职责：供一个或多个过滤器注册
+  * 前置条件：filter已创建
+  * 后置条件：filter已注册完成
+  
+* public List\<T\> doFilter(List\<T\> list)
+  * 职责：对已注册的过滤器，管道传入数据，由过滤器按需处理，并返回处理好的数据
+  * 前置条件：输入流已就绪
+  * 后置条件：更新数据内容
+  
 ## 三、重要协作
 ### 3.1 流程图
 基本管道-过滤器模式的流程图如下：
@@ -105,7 +113,9 @@
 ![Pipe&FilterStateChart](assets/hq/Pipe&FilterStateChart.png)
 
 ### 3.3 顺序图
+管道过滤器模块顺序图
 
+![Pipe&FilterSequenceDiagram](assets/hq/Pipe&FilterSequenceDiagram.png)
 
 
 ## 四、设计模式应用
