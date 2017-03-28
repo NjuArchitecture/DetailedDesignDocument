@@ -18,8 +18,14 @@
 ### 设计概述
 
 同一个服务可能有多个服务提供者,同时可能有新的服务器注册进来,或者服务器宕机而被剔除,服务器也可能会主动解除注册.  
+
 同时,服务调用者需要向注册中心查询服务列表,以便调用服务.  
+
 因此,Register分为Server和Client两部分.Server是注册中心服务器,负责服务器列表的维护,Client负责向服务器注册/注销或汇报健康状态,通知也能像服务器查询服务.
+
+另外简述一下系统所使用的心跳机制.client按固定频率发送心跳,假设5s一次.服务器端对服务器表定期进行扫描,假设扫描周期为11s一次.那么每个client应该在一个周期内发送两次心跳.若是扫描到一周期内发送不到2次,则将client冻结起来,若是下一个周期没有心跳,则删除客户端,并通知所有consumer.
+
+之所以冻结而不直接删除,是因为通知consumer的开销较大,频繁的增删可能影响性能.
 
 ### 角色
 
@@ -29,22 +35,20 @@
 public void register\(ServerInfo\)  
 public void cancel\(ServerInfo\)  
 public List&lt;ServerInfo&gt; getService\(serviceName\)
-
-
+public void heartBeat(ServerInfo)
 
 **RegisterClient**
 
 public void register\(\)
-
 public void cancel\(\)
-
 public List&lt;ServerInfo&gt; getService\(serviceName\)
-
 public void registerListener\(RegisterOberver\)
 
 ## 二、类的设计
 
 ### 2.1 类图
+
+![](/assets/sbin/RegisterServerClass.png)
 
 ### 2.2 类描述
 
@@ -240,5 +244,5 @@ VO类,记录Server的各类属性
 
 ### Builder
 
-负载均衡的Config类是复杂的,并且其数据可能来源于配置文件,硬编码或者网络,因此使用Builder来处理其构造过程.
+负载均衡的Config类是复杂的,并且其数据可能来源于配置文件,硬编码或者网络,因此使用Builder来处理其构造过程
 
