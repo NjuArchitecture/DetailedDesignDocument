@@ -153,120 +153,60 @@ public void registerListener\(RegisterOberver\)
 ---
 
 
-#### LoadBalancer类
+#### HealthChecker类
 
 ##### 类职责
 
-负责一个具体服务的负载均衡.包括挑选服务器,维护服务器列表等.
+对HealthMap进行定期检查,清零心跳数,冻结服务或者移除服务
 
 ##### 类方法
 
-* public Server selectServer\(Requesst\)
-  * 职责：选择一个被调用的Server
-  * 前置条件：配置正确,服务正常启动
-  * 后置条件：无
-* public Object execute\(Server\)
-  * 职责：对指定的Server执行调用
-  * 前置条件: Server的信息正确
-  * 后置条件：无
-* public void initServer\(\)
-  * 职责：初始化Server的列表
-  * 前置条件：关于列表的配置正确
-  * 后置条件：server列表被初始化
-* public void updateServer\(\)
-  * 职责：更新Server的列表
-  * 前置条件：列表已被初始化
-  * 后置条件：列表被更新
+* public Server check\(\)
+  * 职责：检测各服务器的健康状态
+  * 前置条件：无
+  * 后置条件：对于心跳数正常的服务器,清空心跳.不足的服务器冻结,冻结的服务器移除.
 
 ---
 
-#### LoadBalanceStrategy类
+#### Notifier类
 
 ##### 类职责
 
-负载均衡算法的策略接口,从Server列表中选出一个Server.
+服务器的新增和移除需要通知他人,如服务的消费者.Notify是通知的策略接口,抽象不同的通知实现.
+
+通知可能是向客户端通信,可能是通过配置的url接口等,因此Notify可能有多种实现.
 
 ##### 类方法
 
-* public Server choose\(ServerList,Requesst\)
-  * 职责：从list中选一个server
+* public Server notify\(List comsumer\)
+  * 职责：向列表中的comsumer进行通知
   * 前置条件：List不为空
-  * 后置条件：无
+  * 后置条件：发送通知
 
 ---
 
-#### RandomStrategy类
+
+#### ClientNotifer类
 
 ##### 类职责
 
-负载均衡算法的策略接口的一种实现,采用随机法选取服务器,
+通知策略的实现类.完成向客户端通信的逻辑
 
 ##### 类方法
 
-* public Server choose\(ServerList,Requesst\)
-  * 职责：用随机法从List中选取一个Server
-  * 前置条件：配置正确,服务正常启动
-  * 后置条件：无
+* public Server notify\(List comsumer\)
+  * 职责：向列表中的comsumer进行通知
+  * 前置条件：List不为空
+  * 后置条件：发送通知
 
 ---
 
-#### UpdateStrategy类
-
-##### 类职责
-
-服务器列表的更新策略,负责服务器列表的增删.
-
-##### 类方法
-
-* public void update\(ServerList\)
-  * 职责：对服务器列表进行增删
-  * 前置条件：服务器列表需要发生变动
-  * 后置条件：服务器列表变动
-
----
-
-#### RegisterUpdateStrategy类
-
-##### 类职责
-
-针对注册中心实现的更新策略,接收注册中心的通知,更新服务列表
-
-##### 类方法
-
-* public void update\(ServerList\)
-
-  * 职责：对服务器列表进行增删
-  * 前置条件：服务器列表需要发生变动
-  * 后置条件：服务器列表变动
-
-* public void registerChange\(ChangeEvent\)
-
-  * 职责：适配注册中心提供的接口,接收注册变动的通知
-  * 前置条件：注册中心的服务列表发生变动
-  * 后置条件：服务列表变动
-
----
-
-#### Server类
-
-##### 类职责
-
-VO类,记录Server的各类属性
-
-##### 类属性
-
-* public String serverId; //服务ID
-* public String serviceName; //服务名称
-* public String host;  //服务地址
-* public int port;    //服务端口
-
----
 
 ## 三、重要协作
 
 ### 顺序图
 
-#### 存储模块顺序图
+
 
 ---
 
