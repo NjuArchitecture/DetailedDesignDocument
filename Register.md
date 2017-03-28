@@ -211,7 +211,7 @@ public void registerListener\(RegisterOberver\)
 
 **健康监测顺序图**
 
-
+![](/assets/健康检测顺序图.png)
 ---
 
 ## 四、设计模式应用
