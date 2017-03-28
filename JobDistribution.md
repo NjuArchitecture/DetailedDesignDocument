@@ -23,8 +23,6 @@
 |  19| [CommentFilter](CommentFilter.md)|  |  |
 |  20| [SortFilter](SortFilter.md)|韩梦虞  | 141250042 |
 |  21 | [ShieldFilter](ShieldFilter.md)| 韩梦虞 | 141250042 |
-|  22 | [GoodsInfoUpdater](GoodsInfoUpdater.md)|  |  |
-|  23 | [OnlineGoodsService](OnlineGoodsService.md)|  |  |
-|  24 | [CrawlerLib](CrawlerLib.md)|  |  |
-|  25 | [TestModule](TestModule.md)| 董本超 | 131130137 |
-|  26| [ErrorCode](ErrorCode.md)| 董本超 | 131130137 |
+|  22 | [GoodsInfoUpdater](GoodsInfoUpdater.md)| 杜天蛟 | 141250031 |
+|  23 | [TestModule](TestModule.md)| 董本超 | 131130137 |
+|  24| [ErrorCode](ErrorCode.md)| 董本超 | 131130137 |
