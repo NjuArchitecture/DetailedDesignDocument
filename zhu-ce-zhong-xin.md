@@ -21,13 +21,11 @@
 
 同时,服务调用者需要向注册中心查询服务列表,以便调用服务.  
 
-因此,Register分为Server和Client两部分.Server是注册中心服务器,负责服务器列表的维护,Client负责向服务器注册/注销或汇报健康状态,通知也能像服务器查询服务.
+因此,Register分为Server和Client两部分.Server是注册中心服务器,负责服务器列表的维护,Client负责向服务器注册/注销或汇报健康状态,同时也能像服务器查询服务.
 
 另外简述一下系统所使用的心跳机制.client按固定频率发送心跳,假设5s一次.服务器端对服务器表定期进行扫描,假设扫描周期为11s一次.那么每个client应该在一个周期内发送两次心跳.若是扫描到一周期内发送不到2次,则将client冻结起来,若是下一个周期没有心跳,则删除客户端,并通知所有consumer.
 
 之所以冻结而不直接删除,是因为通知consumer的开销较大,频繁的增删可能影响性能.
-
-### 角色
 
 ### 模块对外接口
 
@@ -52,60 +50,107 @@ public void registerListener\(RegisterOberver\)
 
 ### 2.2 类描述
 
-#### LoadBalancerClient类
+#### Register类
 
 ##### 类职责
 
-本类是LoadBalancer模块的门面,提供execute方法来发起服务调用
+本类是Register server部分的门面,暴露了Register server相关的方法.
 
 ##### 类方法
 
-* public Object execute\(Request request\): 
-  * 职责：发起一次请求
-  * 前置条件：配置正确,服务初始化成功
-  * 后置条件：完成调用返回结果
+* public void register\(ServerInfo serverInfo\): 
+  * 职责：注册一个服务器
+  * 前置条件: serverInfo信息正确
+  * 后置条件：注册该服务
 
 ---
 
-#### Config类
-
-##### 类职责
-
-负载均衡模块的配置,包括服务列表是否静态,是否启用ping检测服务健康,负载均衡算法,配置中心的信息等.
-
-##### 类属性
-
-* bool isStaticServer  //server列表是否是静态的
-
-* bool ping   //是否使用ping命令检测server状态
-
-* loadBalanceRuleClass    //负载均衡的策略类
-
-* String registerServerType    //注册中心的类型
-
-* String registerServerHost   //注册中心的地址
+* public void cancel\(ServerInfo serverInfo\): 
+  * 职责：注销一个服务器
+  * 前置条件: serverInfo信息正确
+  * 后置条件：注销该服务
 
 ---
 
-#### ConfigBuilder类
+* public List&lt;ServerInfo&gt; getService\(String sericeName,ConsumerInfo consumerInfo): 
+  * 职责：根据名称来查询服务
+  * 前置条件: serviceName不为空,consumerInfo正确
+  * 后置条件：无
+
+---
+
+
+* public void heartbeat\(ServerInfo serverInfo\): 
+  * 职责：接收某一服务器的心跳
+  * 前置条件: serverInfo信息正确
+  * 后置条件：接受该服务器的心跳.
+
+
+
+#### HealthMap类
 
 ##### 类职责
 
-因为Config类构造过程比较复杂,而且将来的配置项可能增多.因此使用专门的Builder来构造Config
+服务器健康状态的Map,记录心跳数和被冻结的服务器.
 
 ##### 类方法
 
-* ConfigBuilder staticServerList\(bool\)
-
-* ConfigBuilder ping\(bool\)
-
-* ConfigBuilder loadBalanceStrategy\(Obj\)
-
-* ConfigBuilder registerServer\(String type,String host\)
-
-* Config build\(\)
+* public void put\(int serviceId,ServerHealth serverHealth\): 
+  * 职责：新增一个记录项
+  * 前置条件: serviceId还不存在,ServerHealth不为空
+  * 后置条件：新增该记录
 
 ---
+
+* public void heartbeat\(int serviceId,ServerHealth serverHealth\): 
+  * 职责：新增一次心跳计数
+  * 前置条件: serviceId已经存在
+  * 后置条件：增加该服务器的心跳计数
+
+---
+
+* public void froze\(int serviceId\): 
+  * 职责：冻结一个服务器
+  * 前置条件: serviceId已经存在
+  * 后置条件：冻结该服务器
+
+---
+
+* public void remove\(int serviceId\): 
+  * 职责：移除一个服务器记录
+  * 前置条件: serviceId存在,并且已被冻结
+  * 后置条件：移除该服务
+
+---
+
+#### ServiceMap类
+
+##### 类职责
+
+服务名与服务器的对应表,一个服务名对应多个服务器
+
+##### 类方法
+
+* public void put\(String serviceName,ServerInfo serverInfo\):
+* 职责：对该服务名增加一个服务器
+* 前置条件: serverInfo配置正确
+* 后置条件：增加该服务器
+
+---
+
+* public void remove\(String serviceName,int serviceId\):
+* 职责：移除该服务名下的一个服务器
+* 前置条件: 服务名和服务器都存在,并且是对应关系
+* 后置条件：移除服务器,并通知对应的调用者
+
+---
+* public void find\(String serviceName,ConsumerInfo consumerInfo\):
+* 职责：根据服务名查找服务
+* 前置条件: serviceName存在,ConsumerInfo正确
+* 后置条件：无
+
+---
+
 
 #### LoadBalancer类
 
