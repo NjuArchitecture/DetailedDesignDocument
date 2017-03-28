@@ -68,7 +68,7 @@
 	* 前置条件：无	
 	* 后置条件：无
 	
-* public boolean saveToDataBase() ;
+* public boolean saveToDataBase(Comment comment) ;
 	* 职责：存储评论信息到数据库
 	* 前置条件：评论信息已被过滤处理	
 	* 后置条件：更新数据库信息	
