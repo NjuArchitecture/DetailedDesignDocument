@@ -18,30 +18,17 @@ WebServer主要负责接收用户请求并返回网页.它需要调用其他的W
 
 ### 设计概述
 
-同一个服务可能有多个服务提供者,同时可能有新的服务器注册进来,或者服务器宕机而被剔除,服务器也可能会主动解除注册.  
+WebServer是生成网页的服务器.它需要调用其他的API,整合数据并生成网页,是系统其他模块的连接部分.
 
-同时,服务调用者需要向注册中心查询服务列表,以便调用服务.  
-
-因此,Register分为Server和Client两部分.Server是注册中心服务器,负责服务器列表的维护,Client负责向服务器注册/注销或汇报健康状态,同时也能像服务器查询服务.
-
-另外简述一下系统所使用的心跳机制.client按固定频率发送心跳,假设5s一次.服务器端对服务器表定期进行扫描,假设扫描周期为11s一次.那么每个client应该在一个周期内发送两次心跳.若是扫描到一周期内发送不到2次,则将client冻结起来,若是下一个周期没有心跳,则删除客户端,并通知所有consumer.
-
-之所以冻结而不直接删除,是因为通知consumer的开销较大,频繁的增删可能影响性能.
+WebServer的设计主要关注三点.
+* 一是要让外界访问和具体的API服务器解耦,即有自己的请求路由,而不是直接使用API的路由.
+* 二是要应对页面的变化,尽量减少页面改变时带来的修改.
+* 三是自身要保持简单,尽量避免业务逻辑.这是因为WebServer是单点的,维护的代价较大.
 
 ### 模块对外接口
 
-**ReigisterServer**  
-public void register\(ServerInfo\)  
-public void cancel\(ServerInfo\)  
-public List&lt;ServerInfo&gt; getService\(serviceName\)
-public void heartBeat(ServerInfo)
+public Response request\(Request\)  
 
-**RegisterClient**
-
-public void register\(\)
-public void cancel\(\)
-public List&lt;ServerInfo&gt; getService\(serviceName\)
-public void registerListener\(RegisterOberver\)
 
 ## 二、类的设计
 
