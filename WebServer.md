@@ -21,9 +21,9 @@ WebServer主要负责接收用户请求并返回网页.它需要调用其他的W
 WebServer是生成网页的服务器.它需要调用其他的API,整合数据并生成网页,是系统其他模块的连接部分.
 
 WebServer的设计主要关注三点.
-* 一是要让外界访问和具体的API服务器解耦,即有自己的请求路由,而不是直接使用API的路由.
-* 二是要应对页面的变化,尽量减少页面改变时带来的修改.
-* 三是自身要保持简单,尽量避免业务逻辑.这是因为WebServer是单点的,维护的代价较大.
+* 要让外界访问和具体的API服务器解耦,即有自己的请求路由,而不是直接使用API的路由.
+* 要应对页面的变化,尽量减少页面改变时带来的修改.
+* 自身要保持简单,尽量避免业务逻辑.这是因为WebServer是单点的,维护的代价较大.
 
 ### 模块对外接口
 
@@ -34,88 +34,43 @@ public Response request\(Request\)
 
 ### 2.1 类图
 
-![](/assets/sbin/RegisterServerClass.png)
+![](/assets/sbin/webServerClass.png)
 
 ### 2.2 类描述
 
-#### Register类
+#### Dispatcher类
 
 ##### 类职责
 
-本类是Register server部分的门面,暴露了Register server相关的方法.
+请求的分派器,负责将请求分派给各个RequestHandler.
 
 ##### 类方法
 
-* public void register\(ServerInfo serverInfo\): 
-  * 职责：注册一个服务器
-  * 前置条件: serverInfo信息正确
-  * 后置条件：注册该服务
+* public void dispatch\(Request request\): 
+  * 职责：将请求分配给特定的RequestHandler
+  * 前置条件: RequestHandler已经正确配置.
+  * 后置条件: 处理请求
 
----
-
-* public void cancel\(ServerInfo serverInfo\): 
-  * 职责：注销一个服务器
-  * 前置条件: serverInfo信息正确
-  * 后置条件：注销该服务
-
----
-
-* public List&lt;ServerInfo&gt; getService\(String sericeName,ConsumerInfo consumerInfo): 
-  * 职责：根据名称来查询服务
-  * 前置条件: serviceName不为空,consumerInfo正确
-  * 后置条件：无
-
----
-
-
-* public void heartbeat\(ServerInfo serverInfo\): 
-  * 职责：接收某一服务器的心跳
-  * 前置条件: serverInfo信息正确
-  * 后置条件：接受该服务器的心跳.
-
-
-
-#### HealthMap类
+#### RequestHandler类
 
 ##### 类职责
 
-服务器健康状态的Map,记录心跳数和被冻结的服务器.
+实际处理请求的类,包含一系列filter和实际的controller.
 
 ##### 类方法
 
-* public void put\(int serviceId,ServerHealth serverHealth\): 
-  * 职责：新增一个记录项
-  * 前置条件: serviceId还不存在,ServerHealth不为空
-  * 后置条件：新增该记录
+* public void handle\(Request request\): 
+  * 职责：处理一个请求
+  * 前置条件: 无
+  * 后置条件：请求被处理
 
 ---
 
-* public void heartbeat\(int serviceId,ServerHealth serverHealth\): 
-  * 职责：新增一次心跳计数
-  * 前置条件: serviceId已经存在
-  * 后置条件：增加该服务器的心跳计数
-
----
-
-* public void froze\(int serviceId\): 
-  * 职责：冻结一个服务器
-  * 前置条件: serviceId已经存在
-  * 后置条件：冻结该服务器
-
----
-
-* public void remove\(int serviceId\): 
-  * 职责：移除一个服务器记录
-  * 前置条件: serviceId存在,并且已被冻结
-  * 后置条件：移除该服务
-
----
-
-#### ServiceMap类
+#### RequestFilter类
 
 ##### 类职责
 
-服务名与服务器的对应表,一个服务名对应多个服务器
+请求的Filter,为请求处理添加切面逻辑
 
 ##### 类方法
 
