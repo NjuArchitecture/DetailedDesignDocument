@@ -211,28 +211,14 @@ public void registerListener\(RegisterOberver\)
 
 **健康监测顺序图**
 
-![](/assets/健康检测顺序图.png)
+![](/assets/sbin/健康检测顺序图.png)
 ---
 
 ## 四、设计模式应用
 
 ### 策略模式
 
-负载均衡模块有两处使用了策略模式.分别是负载均衡的策略和服务列表更新的策略.
+为了
 
-**负载均衡策略**
 
-负载均衡有多种算法,为了方便算法的替换,采用LoadBalanceStrategy封装具体算法.
-
-**服务更新策略**
-
-服务列表可以来源于注册中心或手动配置.使用注册中心这意味着不需要自己去检测其状态,只需要监听即可.手动配置时需要定期ping服务器已确定其状态.这里采用不同的UpdateStrategy封装.
-
-### 适配器模式
-
-对于面向注册中心的服务更新,需要监听Register发来的变化.这里让RegisterUpdateStrategy适配RegisterObserver接口,以监听变化并完成更新.
-
-### Builder
-
-负载均衡的Config类是复杂的,并且其数据可能来源于配置文件,硬编码或者网络,因此使用Builder来处理其构造过程
 
