@@ -69,11 +69,11 @@ SearchServerCluster模块负责设计搜索模块的服务器集群架构，以�
 * Dispatcher: 负责存储时将数据分到不同的shard中
 
 ### 模块对外接口 ###
-1. Document\<Commodity\> **getFromDatabase**(SQL_Query);
+1. Document&lt;Commodity&gt; **getFromDatabase**(SQL_Query);
 	* 职责：从数据库中读取指定的Commodity文档
 	* 前置条件：数据库节点工作正常
 	* 后置条件：返回该Document
-2. void **persist**(Collection\<Document\<Commodity\>\> commodities);
+2. void **persist**(Collection&lt;Document&lt;Commodity&gt;&gt; commodities);
 	* 职责：将一个Collection的商品文档写入到数据库中
 	* 前置条件：数据库节点工作正常
 	* 后置条件：数据库存储该文档并建立备份
@@ -92,11 +92,11 @@ IDBService为SearchServerCluster模块的核心类DBService和DBServiceProxy的�
 
 
 ##### 接口方法 #####
-* public void persist(Collection\<Document\<Commodity\>\>  commodities)
+* public void persist(Collection&lt;Document&lt;Commodity&gt;&gt;  commodities)
 	* 职责：持久化数据
 	* 前置条件：数据库自检通过，正常运行
 	* 后置条件：持久化商品数据并生成备份
-* public Document\<Commodity\> getFromDatabase(Query query)
+* public Document&lt;Commodity&gt; getFromDatabase(Query query)
 	* 职责：从数据库中读取数据
 	* 前置条件：数据库自检通过，正常运行
 	* 后置条件：从数据库中返回相关数据
@@ -108,19 +108,19 @@ IDBService为SearchServerCluster模块的核心类DBService和DBServiceProxy的�
 DBService类是IDBService接口的实现类，包含了持久化和读取数据的主要逻辑实现。它向上实现了IDBService的接口，持有HotBackup和Dispatcher，分别负责分片和热备份。Dispatcher负责封装数据库操作具体在哪个分片上执行，HotBackup负责在存储数据时进行热备份，并且当节点宕机后启动恢复过程
 
 ##### 类方法 #####
-* public void persist(Collection\<Document\<Commodity\>\>  commodities)
+* public void persist(Collection&lt;Document&lt;Commodity&gt;&gt;  commodities)
 	* 职责：持久化数据
 	* 前置条件：数据库自检通过，正常运行
 	* 后置条件：持久化商品数据并生成备份
-* public Document\<Commodity\> getFromDatabase(Query query)
+* public Document&lt;Commodity&gt; getFromDatabase(Query query)
 	* 职责：从数据库中读取数据
 	* 前置条件：数据库自检通过，正常运行
 	* 后置条件：从数据库中返回相关数据
-* private void persistToShard(Shard shard, Collection\<Document\<Commodity\>\>  commodities)
+* private void persistToShard(Shard shard, Collection&lt;Document&lt;Commodity&gt;&gt;  commodities)
 	* 职责：持久化数据到某个分片上
 	* 前置条件：数据库自检通过，正常运行
 	* 后置条件：持久化商品数据到分片中并生成备份
-* private Document\<Commodity\> getFromShard(Shard shard, Query query)
+* private Document&lt;Commodity&gt; getFromShard(Shard shard, Query query)
 	* 职责：从数据库中读取数据
 	* 前置条件：数据库自检通过，正常运行
 	* 后置条件：在给定的分片中执行数据库操作
@@ -133,11 +133,11 @@ DBService类是IDBService接口的实现类，包含了持久化和读取数据�
 DBServiceProxy是DBService的代理类，由于数据库服务是运行在多个服务器节点的，且极可能与提供外界接口的程序不在同一个服务器节点上，因此，我们需要一个代理类，用来代表其他节点上运行真正的DBService的实例。DBServiceProxy类持有Router的实例，用来将数据库请求转发到其他数据库节点上去。
 
 ##### 类方法 #####
-* public void persist(Collection\<Document\<Commodity\>\>  commodities)
+* public void persist(Collection&lt;Document&lt;Commodity&gt;&gt;  commodities)
 	* 职责：持久化数据
 	* 前置条件：数据库自检通过，正常运行
 	* 后置条件：持久化商品数据并生成备份
-* public Document\<Commodity\> getFromDatabase(Query query)
+* public Document&lt;Commodity&gt; getFromDatabase(Query query)
 	* 职责：从数据库中读取数据
 	* 前置条件：数据库自检通过，正常运行
 	* 后置条件：从数据库中返回相关数据
@@ -171,7 +171,7 @@ router类负责解决服务器负载均衡问题，它接到请求后根据自�
 为了能够更好地复用策略，更加符合开闭原则，避免未来可能的对算法的修改破坏原来类的封装性，于是将路由算法行为抽象成接口，并将实现放在策略类的具体实现类中。RouterStrategy可有多个实现类
 
 ##### 接口&类方法 #####
-* public NodeServer getDestinationRoute(List\<NodeStatus\> nodeStatus)
+* public NodeServer getDestinationRoute(List&lt;NodeStatus&gt; nodeStatus)
 	* 职责：根据目前服务器节点状况判断获取目标NodeServer
 	* 前置条件：数据库自检通过，正常运行
 	* 后置条件：返回该请求应当转发的目的地
@@ -184,7 +184,7 @@ router类负责解决服务器负载均衡问题，它接到请求后根据自�
 HotBackup类负责热备份数据，恢复数据。当一个新的数据被存储时，HotBackup类需要向该服务器节点的备份shards写入数据。当服务器节点出现宕机后恢复时，DBService需要调用HotBackup的recoverFromBackup来恢复备份。
 
 ##### 类方法 #####
-* public List\<Shard\> recoverFromBackup()
+* public List&lt;Shard&gt; recoverFromBackup()
 	* 职责：恢复该节点的原始分片（Original Shards）
 	* 前置条件：数据库节点原始分配损坏或丢失且备份分片运作正常
 	* 后置条件：从备份分片中恢复数据库及诶党的原始分片
@@ -216,15 +216,15 @@ HotBackup类负责热备份数据，恢复数据。当一个新的数据被存�
 Dispatcher类负责封装一个服务器节点多个分片的实现，多分片机制避免了单节点数据库的最大并发限制，从而大大提高了最大并发量。Dispatcher持有一个数据库节点的分片和对应的备份分片。
 
 ##### 类方法 #####
-* public Map\<Shard, List\<Shard\>\> getBackupShard()
+* public Map&lt;Shard, List&lt;Shard&gt;&gt; getBackupShard()
 	* 职责：获取节点所有原始分片到其备份节点的映射
 	* 前置条件：数据库节点所有原始分片和备份分片运作正常
 	* 后置条件：返回所有原始节点到其备份节点的映射
-* public List\<Shard\> getBackupShard(Shard original)
+* public List&lt;Shard&gt; getBackupShard(Shard original)
 	* 职责：获取给定原始分片到其备份节点的映射
 	* 前置条件：该分片及其备份分片运作正常
 	* 后置条件：返回该节点的所有备份节点
-* public List\<Shard\> getOriginalShard()
+* public List&lt;Shard&gt; getOriginalShard()
 	* 职责：获得该数据库节点的所有原始分片
 	* 前置条件：数据库节点所有原始分片运作正常
 	* 后置条件：返回该数据库节点的所有原始分片
@@ -317,7 +317,7 @@ NodeServer会定期发送通知到MasterNode，如果masterNode无响应的时�
 由于MasterNode选举策略和行为属于容易改变的部分，因而单独封装成一个接口，使用策略模式，以保证MasterNodeStrategy行为的变化不会影响原有的代码啊，更好的符合开闭原则。
 
 ##### 类方法 #####
-* public NodeServer electMasterNode(List\<NodeServer\> servers)
+* public NodeServer electMasterNode(List&lt;NodeServer&gt; servers)
 	* 职责：选举新的MasterNdoe
 	* 前置条件：当前服务器集群无MasterNode
 	* 后置条件：返回下一个应当成为masterNode的节点
