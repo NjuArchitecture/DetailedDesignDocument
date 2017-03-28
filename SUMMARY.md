@@ -27,5 +27,5 @@
 	22. [GoodsInfoUpdater](GoodsInfoUpdater.md)
 	23. [OnlineGoodsService](OnlineGoodsService.md)
 	24. [CrawlerLib](CrawlerLib.md)
-	25. [TestModeAspect](TestModeAspect.md)
+	25. [TestModule](TestModule.md)
 	26. [ErrorCode](ErrorCode.md)

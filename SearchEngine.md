@@ -113,8 +113,8 @@
 	* Index Builder：根据已经生成的关键字流建立索引
 
 ### 模块对外接口 ###
-1. Collection\<CommodityInfo\> **search**(String message, Collection\<Option\> Options);
-2. void **persist**(Collection\<CommodityInfo\> commodities);
+1. Collection&lt;CommodityInfo&gt; **search**(String message, Collection&lt;Option&gt; Options);
+2. void **persist**(Collection&lt;CommodityInfo&gt; commodities);
 
 
 ## 二、类的设计 ##
@@ -134,7 +134,7 @@
 	* 职责：初始化组件，检查数据库连通性
 	* 前置条件：系统初始化完成
 	* 后置条件：完成PersistenceService类的初始化
-* public void persistCommodity(Collection\<Commodity\>); 核心对外接口，提供持久化商品的接口
+* public void persistCommodity(Collection&lt;Commodity&gt;); 核心对外接口，提供持久化商品的接口
 	* 职责：持久化商品信息
 	* 前置条件：类初始化完成
 	* 后置条件：持久化商品数据，并建立索引
@@ -146,12 +146,12 @@
 本类的职责是暂时存储DataProvider传过来的大量数据，并以流的方式提供商品的数据。
 
 ##### 类方法 #####
-* public void addCommodity(List\<Commodity\>)
+* public void addCommodity(List&lt;Commodity&gt;)
 	* 职责：增加商品信息到临时存储空间中
 	* 前置条件：类初始化完成
 	* 后置条件：将商品信息转化成流式暂时存储
 
-* public void getCommodity():Stream\<Commodity\>
+* public void getCommodity():Stream&lt;Commodity&gt;
 	* 职责：返回缓存池里未持久化的信息
 	* 前置条件：类初始化完成
 	* 后置条件：返回未持久化的商品信息
@@ -165,7 +165,7 @@
 预处理的逻辑可能变化，因此采用策略模式，将具体的预处理逻辑放在PreProcessStrategy中
 
 ##### 类方法 #####
-* public void getCommodity():Stream\<Commodity\>
+* public void getCommodity():Stream&lt;Commodity&gt;
 	* 职责：返回预处理后的信息
 	* 前置条件：从TempSave类处获取数据
 	* 后置条件：返回预处理后的商品信息流
@@ -193,7 +193,7 @@ Filter类是建立索引的关键类，它持有一系列的过滤器，逐个�
 	* 前置条件：无
 	* 后置条件：完成过滤
 
-* public Map\<Key, Commodity\> getCommodity();
+* public Map&lt;Key, Commodity&gt; getCommodity();
 	* 职责：返回经过过滤的商品信息键值对
 	* 前置条件：商品信息过滤完成
 	* 后置条件：返回经过过滤的商品信息键值对
@@ -205,7 +205,7 @@ Filter类是建立索引的关键类，它持有一系列的过滤器，逐个�
 KeyFilter接口定义了所有关键字Filter类必须实现的接口，便于Filter类统一调度
 
 ##### 接口方法 #####
-* public Map<Key, Commodity> filter(Map\<Key, Commodity\>);
+* public Map<Key, Commodity> filter(Map&lt;Key, Commodity&gt;);
 	* 职责：按照类的策略对商品关键字进行过滤
 	* 前置条件：商品信息已经经过预处理
 	* 后置条件：返回经过当前类过滤的商品
@@ -301,11 +301,11 @@ IDataService接口是为了使用代理模式，避免直接操作数据库而�
 
 
 ##### 接口方法 #####
-* public void persist(Map\<Key, Commodity\>)
+* public void persist(Map&lt;Key, Commodity&gt;)
 	* 职责：存储商品
 	* 前置条件：商品关键字已经过过滤处理
 	* 后置条件：持久化商品信息并建立索引
-* public List\<Commodity\> getCommodityByKey(Set\<Key\>);
+* public List&lt;Commodity&gt; getCommodityByKey(Set&lt;Key&gt;);
 	* 职责：根据关键字返回相关度最高的商品信息
 	* 前置条件：关键字已经经过过滤
 	* 后置条件：返回相关度最高的商品信息
@@ -318,15 +318,15 @@ IDataService接口是为了使用代理模式，避免直接操作数据库而�
 DataService类负责封装与数据库交互的实现，并对外提供存储以及根据索引访问的接口。除了存储商品信息外，DataService还需要根据对关键字建立倒序索引，即每个关键字在哪些商品的信息描述中出现了。这些都是必要的，将极大程度的改善搜索的效率。
 
 ##### 类方法 #####
-* private void buildIndex(Map\<Key, Commodity\>)
+* private void buildIndex(Map&lt;Key, Commodity&gt;)
 	* 职责：为Map中的每一个商品建立索引
 	* 前置条件：无
 	* 后置条件：建立索引
-* public void persist(Map\<Key, Commodity\>)
+* public void persist(Map&lt;Key, Commodity&gt;)
 	* 职责：存储商品
 	* 前置条件：商品关键字已经过过滤处理
 	* 后置条件：持久化商品信息并建立索引
-* public List\<Commodity\> getCommodityByKey(Set\<Key\>);
+* public List&lt;Commodity&gt; getCommodityByKey(Set&lt;Key&gt;);
 	* 职责：根据关键字返回相关度最高的商品信息
 	* 前置条件：关键字已经经过过滤
 	* 后置条件：返回相关度最高的商品信息
@@ -345,19 +345,19 @@ DataService类负责封装与数据库交互的实现，并对外提供存储以
 
 ##### 类方法 #####
 
-* public Collection\<Commodity\> getCommodityByKey(Set\<Key\>)
+* public Collection&lt;Commodity&gt; getCommodityByKey(Set&lt;Key&gt;)
 	* 职责：根据给定的Key返回相关的商品信息
-	* 前置条件：Set<\Key\>不为null 
+	* 前置条件：Set<\Key&gt;不为null 
 	* 后置条件：返回相关度最高的商品信息
 * private boolean judgeIfInCache(Key)
 	* 职责：判断一个关键字的搜索结果是否已经存在在cache中
 	* 前置条件：无
 	* 后置条件：返回是否在Cache中
-* private Collection\<Commodity\> getCommodityFromCache(Set\<Key\>)
+* private Collection&lt;Commodity&gt; getCommodityFromCache(Set&lt;Key&gt;)
 	* 职责：从缓存中读取关键字所对应的商品信息
 	* 前置条件：关键字的相关结果位于缓存中
 	* 后置条件：返回关键字对应的商品信息
-* private Collection\<Commodity\> getCommodityFromDataService(Set\<Key\>)
+* private Collection&lt;Commodity&gt; getCommodityFromDataService(Set&lt;Key&gt;)
 	* 职责：从数据库中读取关键字所对应的商品信息
 	* 前置条件：关键字的相关结果不在缓存中
 	* 后置条件：返回关键字对应的商品信息
@@ -372,12 +372,12 @@ DataService类负责封装与数据库交互的实现，并对外提供存储以
 负责根据关键字检索信息。
 
 ##### 类方法 #####
-* public List\<Commodity\> search(String)
+* public List&lt;Commodity&gt; search(String)
 	* 职责：对外提供的接口，提供搜索功能
 	* 前置条件：无
 	* 后置条件：返回搜索结果
 
-* private getCommodityData(Set\<Key\>):Map<\Key,Commodity\>
+* private getCommodityData(Set&lt;Key&gt;):Map<\Key,Commodity&gt;
 	* 职责：调用DataServiceProxy搜索并返回结果
 	* 前置条件：无
 	* 后置条件：返回关键词Set所相关联的商品信息
@@ -400,7 +400,7 @@ DataService类负责封装与数据库交互的实现，并对外提供存储以
 本类职责为计算类的关键词的相关性，相关性越高的商品才返回的结果中排序越靠前，由于该算法易于变化且应有多种实现，因此抽象出来形成接口。
 
 ##### 类方法 #####
-* public double computeRelationalPower(Set\<Key\>, Commodity);
+* public double computeRelationalPower(Set&lt;Key&gt;, Commodity);
 	* 职责：根据关键词和商品信息计算商品信息的相关度，相关度越高，匹配越强
 	* 前置条件：无
 	* 后置条件：返回该商品与关键词的匹配度
@@ -418,7 +418,7 @@ QueryInterpreter类负责解析前端传来的查询语句，并转化为Query�
 	* 职责：解析用户查询语句，将之转化为Query，Query内含有关键字等信息,需要调用Filter解析关键字
 	* 前置条件：String符合定义的查询语法
 	* 后置条件：返回经过解释的Query对象
-+ private void filter(Set\<Key\>):
++ private void filter(Set&lt;Key&gt;):
 	* 职责：过滤关键词，以便使得用户搜索的关键词与系统存储时的关键词相匹配从而顺利搜索
 	* 前置条件：已经解析出用户搜索的关键词
 	* 后置条件：返回经过处理后的关键词
@@ -438,7 +438,7 @@ QueryInterpreter类负责解析前端传来的查询语句，并转化为Query�
 	* 职责：判断关键字是否位于缓存中
 	* 前置条件：关键词经过处理
 	* 后置条件：返回关键词是否位于Cache中
-* public Collection\<Commodity\> getCommodityFromCache(Set\<Key\>)
+* public Collection&lt;Commodity&gt; getCommodityFromCache(Set&lt;Key&gt;)
 	* 职责：从缓存中读取关键字所对应的商品信息
 	* 前置条件：关键字的相关结果位于缓存中
 	* 后置条件：返回关键字对应的商品信息
