@@ -2,9 +2,9 @@
 
 |模块编号 | 模块名称 | 设计者 |  学号|
 | :--- | :---| :---|:---|
-|  1 | [WebServer](WebServer.md)|  |  |
-|  2 | [Register](Register.md)|  |  |
-|  3 | [LoadBalancer](LoadBalancer.md)	 |  |  |
+|  1 | [WebServer](WebServer.md)| 申彬 | 141250106 |
+|  2 | [Register](Register.md)| 申彬 | 141250106 |
+|  3 | [LoadBalancer](LoadBalancer.md)	 | 申彬 | 141250106 |
 |  4 | [SearchServer](SearchServer.md)|  |  |
 |  5 | [CommentServer](SearchServer.md)|  |  |
 |  6 | [GoodsPipe](GoodsPipe.md)|  |  |
