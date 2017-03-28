@@ -5,10 +5,10 @@
 |  1 | [WebServer](WebServer.md)| 申彬 | 141250106 |
 |  2 | [Register](Register.md)| 申彬 | 141250106 |
 |  3 | [LoadBalancer](LoadBalancer.md)	 | 申彬 | 141250106 |
-|  4 | [SearchServer](SearchServer.md)|  |  |
-|  5 | [CommentServer](SearchServer.md)|  |  |
-|  6 | [GoodsPipe](GoodsPipe.md)|  |  |
-|  7 | [CommentPipe](CommentPipe.md)|  |  |
+|  4 | [SearchServer](SearchServer.md)| 韩奇  | 141250043 |
+|  5 | [CommentServer](CommentServer.md)| 韩奇 | 141250043 |
+|  6 | [GoodsPipe](Pipe&Filter.md)| 韩奇 | 141250043 |
+|  7 | [CommentPipe](Pipe&Filter.md)| 韩奇 | 141250043 |
 |  8 | [ContentServer](ContentServer.md)|  |  |
 |  9 | [SearchResultPages](SearchResultPages.md)|  |  |
 |  10 | [CommentPages](CommentPages.md)|  |  |
