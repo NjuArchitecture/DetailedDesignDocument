@@ -206,6 +206,10 @@ public void registerListener\(RegisterOberver\)
 
 ### 顺序图
 
+**注册及心跳顺序图**
+![](/assets/sbin/Register顺序图.png)
+
+**健康监测顺序图**
 
 
 ---
