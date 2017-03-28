@@ -74,57 +74,42 @@ public Response request\(Request\)
 
 ##### 类方法
 
-* public void put\(String serviceName,ServerInfo serverInfo\):
-* 职责：对该服务名增加一个服务器
-* 前置条件: serverInfo配置正确
-* 后置条件：增加该服务器
-
----
-
-* public void remove\(String serviceName,int serviceId\):
-* 职责：移除该服务名下的一个服务器
-* 前置条件: 服务名和服务器都存在,并且是对应关系
-* 后置条件：移除服务器,并通知对应的调用者
-
----
-
-* public void find\(String serviceName,ConsumerInfo consumerInfo\):
-* 职责：根据服务名查找服务
-* 前置条件: serviceName存在,ConsumerInfo正确
+* public void doFilter\(Request request,Response response\):
+* 职责：完成请求处理的切面逻辑
+* 前置条件: 无
 * 后置条件：无
 
 ---
 
 
-#### HealthChecker类
+#### Controller类
 
 ##### 类职责
 
-对HealthMap进行定期检查,清零心跳数,冻结服务或者移除服务
+负责实际的请求处理,生成页面的逻辑.
 
 ##### 类方法
 
-* public Server check\(\)
-  * 职责：检测各服务器的健康状态
-  * 前置条件：无
-  * 后置条件：对于心跳数正常的服务器,清空心跳.不足的服务器冻结,冻结的服务器移除.
+* public void handleRquest(Request request,Response response):
+* 职责：处理请求并生成页面
+* 前置条件: 请求已通过filter
+* 后置条件：返回页面
+
 
 ---
 
-#### Notifier类
+#### SearchService类
 
 ##### 类职责
 
-服务器的新增和移除需要通知他人,如服务的消费者.Notify是通知的策略接口,抽象不同的通知实现.
-
-通知可能是向客户端通信,可能是通过配置的url接口等,因此Notify可能有多种实现.
+对搜索API的封装,负责调用搜索服务
 
 ##### 类方法
 
-* public Server notify\(List comsumer\)
-  * 职责：向列表中的comsumer进行通知
-  * 前置条件：List不为空
-  * 后置条件：发送通知
+* public SearchResult search(String key):
+* 职责：调用搜索API,包装返回结果
+* 前置条件: key不为空
+* 后置条件：请求正确发送,返回结果正确
 
 ---
 
