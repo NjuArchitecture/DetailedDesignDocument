@@ -11,7 +11,7 @@
 	6. [GoodsPipe](Pipe&Filter.md)
 	7. [CommentPipe](Pipe&Filter.md)
 	8. [ContentServer](ContentServer.md)
-	9. [SearchResultPages](SearchResultPages.md)
+	9. [FrontendModule](FrontendModule.md)
 	10. [CommentPages](CommentPages.md)
 	11. [CacheService](CacheService.md)
 	12. [CacheDB](CacheDB.md)
