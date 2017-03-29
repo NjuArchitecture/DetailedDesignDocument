@@ -19,8 +19,8 @@
 |  15| [CDNService](CDNService.md)|韩梦虞 | 141250042 |
 |  16| [CommentDataService](CommentDataService.md)| 侍硕 | 141250110 |
 |  17| [DataBaseCluster](DBCluster.md)| 侍硕 | 141250110 |
-|  18| [Firewall](Firewall.md)|  |  |
-|  19| [CommentFilter](CommentFilter.md)|  |  |
+|  18| [Firewall](Firewall.md)| 范炜 | 141250035 |
+|  19| [CommentFilter](CommentFilter.md)| 范炜 | 141250035 |
 |  20| [SortFilter](SortFilter.md)|韩梦虞  | 141250042 |
 |  21 | [ShieldFilter](ShieldFilter.md)| 韩梦虞 | 141250042 |
 |  22 | [GoodsInfoUpdater](GoodsInfoUpdater.md)| 杜天蛟 | 141250031 |
