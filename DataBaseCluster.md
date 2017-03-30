@@ -1,5 +1,4 @@
-#
-DataBaseCluster 模块 #
+# DataBaseCluster 模块 #
 
 ## 一、概述 ##
 ### 承担的需求（主要秘密） ###

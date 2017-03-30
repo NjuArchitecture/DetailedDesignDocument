@@ -347,7 +347,7 @@ DataService类负责封装与数据库交互的实现，并对外提供存储以
 
 * public Collection&lt;Commodity&gt; getCommodityByKey(Set&lt;Key&gt;)
 	* 职责：根据给定的Key返回相关的商品信息
-	* 前置条件：Set<\Key&gt;不为null 
+	* 前置条件：Set&lt;Key&gt;不为null 
 	* 后置条件：返回相关度最高的商品信息
 * private boolean judgeIfInCache(Key)
 	* 职责：判断一个关键字的搜索结果是否已经存在在cache中
@@ -377,7 +377,7 @@ DataService类负责封装与数据库交互的实现，并对外提供存储以
 	* 前置条件：无
 	* 后置条件：返回搜索结果
 
-* private getCommodityData(Set&lt;Key&gt;):Map<\Key,Commodity&gt;
+* private getCommodityData(Set&lt;Key&gt;):Map&lt;Key,Commodity&gt;
 	* 职责：调用DataServiceProxy搜索并返回结果
 	* 前置条件：无
 	* 后置条件：返回关键词Set所相关联的商品信息
