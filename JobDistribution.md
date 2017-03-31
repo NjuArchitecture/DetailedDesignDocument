@@ -11,8 +11,8 @@
 |  7 | [ContentServer](ContentServer.md)| 段正谋 | 141250033 |
 |  8 | [FrontendModule](FrontendModule.md)| 段正谋 | 141250033 |
 |  9 | [CommentPages](CommentPages.md)|  |  |
-|  10| [CacheService](CacheService.md)|  |  |
-|  11| [CacheDB](CacheDB.md)|  |  |
+|  10| [CacheService](CacheService.md)| 狄逸枫 | 141250026 |
+|  11| [CacheDB](CacheDB.md)| 狄逸枫 | 141250026 |
 |  12| [SearchEngine](SearchEngine.md)| 陈自强 | 141250017 |
 |  13| [SearchServerCluster](SearchServerCluster.md)| 陈自强 | 141250017 |
 |  14| [CDNService](CDNService.md)|韩梦虞 | 141250042 |
@@ -24,3 +24,5 @@
 |  20 | [GoodsInfoUpdater](GoodsInfoUpdater.md)| 杜天蛟 | 141250031 |
 |  21 | [TestModule](TestModule.md)| 董本超 | 131130137 |
 |  22| [ErrorCode](ErrorCode.md)| 董本超 | 131130137 |
+
+
