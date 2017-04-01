@@ -11,7 +11,6 @@
 	6. [Pipe&Filter](Pipe&Filter.md)
 	7. [ContentServer](ContentServer.md)
 	8. [FrontendModule](FrontendModule.md)
-	9. [CommentPages](CommentPages.md)
 	10. [CacheService](CacheService.md)
 	11. [CacheDB](CacheDB.md)
 	12. [SearchEngine](SearchEngine.md)
