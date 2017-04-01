@@ -10,7 +10,6 @@
 |  6 | [Pipe&Filter](Pipe&Filter.md)| 韩奇 | 141250043 |
 |  7 | [ContentServer](ContentServer.md)| 段正谋 | 141250033 |
 |  8 | [FrontendModule](FrontendModule.md)| 段正谋 | 141250033 |
-|  9 | [CommentPages](CommentPages.md)|  |  |
 |  10| [CacheService](CacheService.md)| 狄逸枫 | 141250026 |
 |  11| [CacheDB](CacheDB.md)| 狄逸枫 | 141250026 |
 |  12| [SearchEngine](SearchEngine.md)| 陈自强 | 141250017 |
